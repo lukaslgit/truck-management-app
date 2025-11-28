@@ -3,6 +3,10 @@ import dotenv from 'dotenv';
 
 import { pool } from './db/db.js';
 
+//Routes
+import tests from './routes/test.js'
+import workers from './routes/workers.js'
+
 const app = express()
 
 app.use(json())
@@ -10,20 +14,12 @@ dotenv.config()
 
 const PORT = process.env.PORT
 
-// TEST
-app.get('/', async (req, res) => {
+// TEST ROUTES
+app.use('/api/tests', tests)
 
-    const testConnection = await pool.query('SELECT NOW()')
+// WORKERS ROUTES
+app.use('/api/workers', workers)
 
-    if (testConnection.rows[0].now.length === 0){
-        res.status(500).json({'error': 'Unable to connect to Database'})
-        return
-    }
-
-    const time = testConnection.rows[0].now
-
-    res.json({'message': `Connection to DB successful, time now: ${time}`})
-})
 
 app.listen(PORT, () => {
     console.log(`Server running on PORT: ${PORT}`)
