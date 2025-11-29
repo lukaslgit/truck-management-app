@@ -32,6 +32,7 @@ router.post('/register', auth, async (req, res) => {
         res.status(200).json({'message': `${newTruck.rows[0].truck_name} was registered!`})
 
     } catch (error) {
+        console.log(error)
         res.status(400).json({'error': 'Something went wrong, please try again later!'})   
     }
 })

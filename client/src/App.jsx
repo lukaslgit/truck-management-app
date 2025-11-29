@@ -5,6 +5,9 @@ import Login from './components/Login'
 import Register from './components/Register'
 import NotFound from './components/NotFound'
 import Profile from './components/Profile'
+import Trucks from './components/Trucks.jsx'
+import RegisterTruck from './components/RegisterTruck.jsx'
+
 import api from './api/axios.js'
 import { useAuth } from './context/AuthContext.jsx'
 
@@ -45,6 +48,9 @@ export default function(){
             {user && <li>
               <Link to={'/profile'}>Profile</Link>
             </li>}
+            {user?.role === 'manager' && <li>
+              <Link to={'/trucks'}>Trucks</Link>
+            </li>}
             {user && <li>
               <button onClick={handleLogOut}>LogOut</button>
             </li>}
@@ -56,6 +62,8 @@ export default function(){
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path='/trucks' element={<Trucks />}/>
+          <Route path='/trucks/register' element={<RegisterTruck />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </div>
