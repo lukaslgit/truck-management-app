@@ -28,7 +28,6 @@ router.post('/register', async (req, res) => {
 
         res.json(newUser.rows[0])
     } catch (error) {
-        console.log(error)
         res.status(500).json({'error': 'Unable to register new user!'})
     }
 })
@@ -79,6 +78,16 @@ router.post('/login', async (req, res) => {
 // Check if worker is logged in
 router.get('/me', auth, (req, res) => {
     res.json({ user: req.user })
+})
+
+// Worker logout
+router.post('/logout', (req, res) => {
+    try {
+        res.clearCookie('token', {maxAge: 1})
+        res.status(200).json({'message': 'Log out!'})
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 export default router;

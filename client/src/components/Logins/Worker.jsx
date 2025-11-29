@@ -1,11 +1,13 @@
 import axios from 'axios'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function(){
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
+    const navigate = useNavigate()
 
     async function handleLogin(e){
         e.preventDefault()
@@ -23,7 +25,9 @@ export default function(){
             console.log(res.data)
             setError(null)
 
-            // TODO NAVIGATE TO PROFILE PAGE
+            // TODO add notification 'Logged in!'
+
+            navigate('/profile')
 
         } catch (error) {
 

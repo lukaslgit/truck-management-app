@@ -53,7 +53,7 @@ export default function(){
             <input type="text" placeholder="Last name" autoComplete="username" value={lastName} onChange={e => setLastName(e.target.value)}></input>
             <input type="email" placeholder="Email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)}></input>
             <input type="password" placeholder="Password" autoComplete="new-password" value={password} onChange={e => setPassowrd(e.target.value)}></input>
-            <input type="text" placeholder="Manager Id (optional)" value={managerId} onChange={e => setManagerId(e.target.value)}></input>
+            <input type="number" placeholder="Manager Id (optional)" value={managerId} onChange={e => setManagerId(e.target.value)}></input>
             <button type="submit">Register</button>
         </form>
         {msg && <p>{msg}</p>}
