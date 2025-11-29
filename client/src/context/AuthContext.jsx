@@ -22,9 +22,14 @@ export function AuthProvider({ children }) {
         }
     }
 
-    async function login(email, password) {
-        await api.post('/workers/login', {"email": email, "password": password})
-        await checkAuth()
+    async function login(email, password, isManager) {
+        if(!isManager){
+            await api.post('/workers/login', {"email": email, "password": password})
+            await checkAuth()
+        } else {
+            await api.post('/managers/login', {"email": email, "password": password})
+            await checkAuth()
+        }
     }
 
     async function logout() {

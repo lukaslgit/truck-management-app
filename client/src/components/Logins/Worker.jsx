@@ -1,4 +1,3 @@
-import api from '../../api/axios.js'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
@@ -22,7 +21,7 @@ export default function(){
                 return
             }
 
-            await login(email, password)
+            await login(email, password, false)
 
             setError(null)
 

@@ -29,7 +29,7 @@ export default function(){
             </section>
 
             <section>
-                <p>ID: {user.worker_id}</p>
+                <p>{user.role === 'manager' ? `MANAGER ID: ${user.manager_id}` : `WORKER ID: ${user.worker_id}`}</p>
                 <p>Email: {user.email}</p>
             </section>
 
