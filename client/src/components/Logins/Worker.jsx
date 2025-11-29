@@ -1,6 +1,7 @@
-import axios from 'axios'
+import api from '../../api/axios.js'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 export default function(){
 
@@ -8,6 +9,7 @@ export default function(){
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
     const navigate = useNavigate()
+    const { setUser } = useAuth()
 
     async function handleLogin(e){
         e.preventDefault()
@@ -20,9 +22,9 @@ export default function(){
                 return
             }
 
-            const res = await axios.post('http://localhost:8000/api/workers/login', {"email": email, "password": password}, {withCredentials: true})
-
-            console.log(res.data)
+            const res = await api.post('/workers/login', {"email": email, "password": password})
+            
+            setUser(res.data)
             setError(null)
 
             // TODO add notification 'Logged in!'

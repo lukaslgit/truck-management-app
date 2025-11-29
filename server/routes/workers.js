@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
                 sameSite: "strict",
                 maxAge: 5 * 60 * 1000
             })
-            res.status(200).json({'message': 'Logged in!'})
+            res.status(200).json(userData.rows[0])
 
     } catch (error) {
         res.status(500).json({'error': "Something went wrong, please try again!"})

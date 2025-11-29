@@ -1,4 +1,4 @@
-import axios from "axios"
+import api from "../../api/axios.js"
 import { useState } from "react"
 
 export default function(){
@@ -23,7 +23,7 @@ export default function(){
                 return
             }
 
-           const res = await axios.post('http://localhost:8000/api/workers/register', 
+           const res = await api.post('/workers/register', 
             {
                 "first_name": firstName,
                 "last_name": lastName,

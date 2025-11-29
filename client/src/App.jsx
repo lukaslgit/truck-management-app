@@ -5,46 +5,49 @@ import Login from './components/Login'
 import Register from './components/Register'
 import NotFound from './components/NotFound'
 import Profile from './components/Profile'
-import axios from 'axios'
+import api from './api/axios.js'
+import { useAuth } from './context/AuthContext.jsx'
 
 export default function(){
 
-  const navigate = useNavigate()
+  const { user, setUser } = useAuth()
 
   async function handleLogOut(){
     try {
-      const res = axios.post('http://localhost:8000/api/workers/logout', {}, {withCredentials: true})
+      await api.post('/workers/logout')
 
-      console.log('You have been loged out!')
+      setUser(null)
 
-      //TODO add notifications
+      console.log('Logged out!')
 
-      navigate('/')
+      // TODO NOTIFICATION
 
     } catch (error) {
       console.log('Something went wrong!')
     }
   }
 
+  const navigate = useNavigate()
+
   return (
       <div>
         <nav>
-          <ul>
+          <ul className='flex gap-5'>
             <li>
               <Link to='/'>Home</Link>
             </li>
-            <li>
+            {!user && <li>
               <Link to='/login'>Login</Link>
-            </li>
-            <li>
+            </li>}
+            {!user && <li>
               <Link to='/register'>Register</Link>
-            </li>
-            <li>
+            </li>}
+            {user && <li>
               <Link to={'/profile'}>Profile</Link>
-            </li>
-            <li>
+            </li>}
+            {user && <li>
               <button onClick={handleLogOut}>LogOut</button>
-            </li>
+            </li>}
           </ul>
         </nav>
 
