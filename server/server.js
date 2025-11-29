@@ -9,6 +9,7 @@ import { pool } from './db/db.js';
 import tests from './routes/test.js'
 import workers from './routes/workers.js'
 import managers from './routes/managers.js'
+import trucks from './routes/trucks.js'
 
 const app = express()
 
@@ -31,8 +32,10 @@ app.use('/api/tests', tests)
 app.use('/api/workers', workers)
 
 // MANAGERS ROUTES
-
 app.use('/api/managers', managers)
+
+// TRUCKS ROUTES
+app.use('/api/trucks', trucks)
 
 
 app.listen(PORT, () => {
