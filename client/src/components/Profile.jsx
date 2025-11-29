@@ -6,17 +6,39 @@ export default function(){
 
     const navigate = useNavigate()
 
-    const {user} = useAuth()
+    const {user, loading} = useAuth()
 
     useEffect(() => {
-        if (!user){
+        if (!user && !loading){
             navigate('/login')
         }
-    },[])
+    },[user, loading])
 
+    if(loading){
+        return(
+            <>LOADING...</>
+        )
+    }
+    
     return(
         <>
-            <p>PROFILE</p>
+        {user &&
+        <div>
+            <section>
+                <h2>{user.name}</h2>
+            </section>
+
+            <section>
+                <p>ID: {user.worker_id}</p>
+                <p>Email: {user.email}</p>
+            </section>
+
+            <section>
+                <>WORKERS TURCK, WORKERS TASK ETC.</>
+            </section>
+        </div>
+        }
         </>
+
     )
 }

@@ -22,13 +22,18 @@ export function AuthProvider({ children }) {
         }
     }
 
+    async function login(email, password) {
+        await api.post('/workers/login', {"email": email, "password": password})
+        await checkAuth()
+    }
+
     async function logout() {
         await api.post('/workers/logout')
         setUser(null)
     }
 
     return (
-        <AuthContext.Provider value={{ user, setUser, logout, loading }}>
+        <AuthContext.Provider value={{ user, setUser, logout, login, loading }}>
             {children}
         </AuthContext.Provider>
     )

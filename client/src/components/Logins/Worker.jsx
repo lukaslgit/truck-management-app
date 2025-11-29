@@ -9,7 +9,7 @@ export default function(){
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
     const navigate = useNavigate()
-    const { setUser } = useAuth()
+    const {login} = useAuth()
 
     async function handleLogin(e){
         e.preventDefault()
@@ -22,9 +22,8 @@ export default function(){
                 return
             }
 
-            const res = await api.post('/workers/login', {"email": email, "password": password})
-            
-            setUser(res.data)
+            await login(email, password)
+
             setError(null)
 
             // TODO add notification 'Logged in!'

@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
                 return
             }
 
-            const userData = await pool.query('SELECT worker_id, email, password FROM workers WHERE email = $1', [email])
+            const userData = await pool.query('SELECT worker_id, first_name, email, password FROM workers WHERE email = $1', [email])
 
             const hashPassword = userData.rows[0].password
 
@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
                 return
             }
 
-            const token = jwt.sign({'worker_id': userData.rows[0].worker_id, 'email': userData.rows[0].email}, process.env.SECRET, {
+            const token = jwt.sign({'worker_id': userData.rows[0].worker_id, 'name': userData.rows[0].first_name, 'email': userData.rows[0].email}, process.env.SECRET, {
                 expiresIn: '5m'
             })
 
@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
                 sameSite: "strict",
                 maxAge: 5 * 60 * 1000
             })
-            res.status(200).json(userData.rows[0])
+            res.status(200).json({'message': 'Logged in'})
 
     } catch (error) {
         res.status(500).json({'error': "Something went wrong, please try again!"})
