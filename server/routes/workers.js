@@ -28,6 +28,7 @@ router.post('/register', async (req, res) => {
 
         res.json(newUser.rows[0])
     } catch (error) {
+        console.log(error)
         res.status(500).json({'error': 'Unable to register new user!'})
     }
 })
@@ -39,7 +40,7 @@ router.post('/login', async (req, res) => {
             const emailExist = await pool.query('SELECT COUNT(*) FROM workers WHERE email = $1', [email])
 
             if (!email || !password){
-                res.status(400).json({'error': 'All fields must be filed!'})
+                res.status(400).json({'error': 'All fields must be filled!'})
                 return
             }
 
