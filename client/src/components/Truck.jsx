@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import api from '../api/axios.js'
@@ -76,9 +76,6 @@ export default function(){
             
             <>
                 
-                <div>
-                    <Link to={'/trucks'}>BACK</Link>
-                </div>
                 {truck && 
                 <div>
                     <p>ID: {truck.truck_id}</p>

@@ -10,6 +10,7 @@ import RegisterTruck from './components/RegisterTruck.jsx'
 import Truck from './components/Truck.jsx'
 import Tasks from './components/Tasks.jsx'
 import RegisterTask from './components/RegisterTask.jsx'
+import Task from './components/Task.jsx'
 
 import api from './api/axios.js'
 import { useAuth } from './context/AuthContext.jsx'
@@ -73,6 +74,7 @@ export default function(){
           <Route path='/trucks/:truckId' element={<Truck />} />
           <Route path='/tasks' element={<Tasks />} />
           <Route path='/tasks/register' element={<RegisterTask />} />
+          <Route path='/tasks/:taskId' element={<Task />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </div>

@@ -3,8 +3,8 @@ const router = express.Router()
 import { auth } from '../middlewares/auth.js'
 import { pool } from '../db/db.js'
 
+//Register new task
 router.post('/register', auth, async (req, res) => {
-    
     const { description, start_location, end_location, driver_id, truck_id } = req.body
     
     try {
@@ -30,6 +30,37 @@ router.post('/register', auth, async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(400).json({'error': 'Something went wrong, please try again later.'})
+    }
+})
+
+//Get all tasks
+router.get('/', async (req, res) => {
+
+    const { finished } = req.query
+
+    try {
+        const data = await pool.query('SELECT * FROM tasks WHERE finished = $1 ORDER BY task_id', [finished])
+        res.status(200).json(data.rows)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const data = await pool.query('SELECT * FROM tasks WHERE task_id = $1', [id])
+
+        if(data.rows.length === 0){
+            res.status(400).json({'error': `Task with id ${id} does not exist!`})
+            return
+        }
+
+        res.send(data.rows[0])
+
+    } catch (error) {
+        res.status(400).json({'error': 'Something went wrong, please try again later!'})
     }
 })
 
