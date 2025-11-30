@@ -7,6 +7,7 @@ import NotFound from './components/NotFound'
 import Profile from './components/Profile'
 import Trucks from './components/Trucks.jsx'
 import RegisterTruck from './components/RegisterTruck.jsx'
+import Truck from './components/Truck.jsx'
 
 import api from './api/axios.js'
 import { useAuth } from './context/AuthContext.jsx'
@@ -64,6 +65,7 @@ export default function(){
           <Route path='/profile' element={<Profile />} />
           <Route path='/trucks' element={<Trucks />}/>
           <Route path='/trucks/register' element={<RegisterTruck />} />
+          <Route path='/trucks/:truckId' element={<Truck />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </div>
