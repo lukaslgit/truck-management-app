@@ -37,7 +37,6 @@ router.post('/register', auth, async (req, res) => {
         res.status(200).json({'message': `Task '${newTask.rows[0].description}' was added!`})
 
     } catch (error) {
-        console.log(error)
         res.status(400).json({'error': 'Something went wrong, please try again later.'})
     }
 })
@@ -68,10 +67,52 @@ router.get('/:id', async (req, res) => {
             return
         }
 
-        res.send(data.rows[0])
+        res.status(200).json(data.rows[0])
 
     } catch (error) {
         res.status(400).json({'error': 'Something went wrong, please try again later!'})
+    }
+})
+
+// Set task status to finished
+router.post('/end/:id', auth, async (req, res) => {
+    
+    const { id } = req.params
+    try {
+
+        const driverMatch = await pool.query('SELECT driver_id FROM trucks WHERE truck_id = $1', [id])
+
+        if(req.user.role != 'manager' && req.user.worker_id != driverMatch.rows[0]?.driver_id){
+            res.status(400).json({'error': 'Only manager or tasks truck driver can finish the task!'})
+            return
+        }
+
+        const updatedTask = await pool.query('UPDATE tasks SET finished = true, end_time = NOW() WHERE task_id = $1 RETURNING task_id', [id])
+
+        res.status(200).json({'message': `Task with id: ${updatedTask.rows[0].task_id} was updated!`})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// Set task status to NOT finished
+router.post('/reopen/:id', auth, async (req, res) => {
+    
+    const { id } = req.params
+    try {
+
+        const driverMatch = await pool.query('SELECT driver_id FROM trucks WHERE truck_id = $1', [id])
+
+        if(req.user.role != 'manager' && req.user.worker_id != driverMatch.rows[0].driver_id){
+            res.status(400).json({'error': 'Only manager can update this task!'})
+            return
+        }
+
+        const updatedTask = await pool.query('UPDATE tasks SET finished = false, end_time = NULL WHERE task_id = $1 RETURNING task_id', [id])
+
+        res.status(200).json({'message': `Task with id: ${updatedTask.rows[0].task_id} was updated!`})
+    } catch (error) {
+        console.log(error)
     }
 })
 

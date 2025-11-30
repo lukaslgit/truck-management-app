@@ -48,15 +48,69 @@ export default function(){
 
     return(
         <div>
-        <form onSubmit={handleRegister}>
-            <input type="text" placeholder="First name" autoComplete="username" value={firstName} onChange={e => setFirstName(e.target.value)}></input>
-            <input type="text" placeholder="Last name" autoComplete="username" value={lastName} onChange={e => setLastName(e.target.value)}></input>
-            <input type="email" placeholder="Email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)}></input>
-            <input type="password" placeholder="Password" autoComplete="new-password" value={password} onChange={e => setPassowrd(e.target.value)}></input>
-            <input type="number" placeholder="Manager Id (optional)" value={managerId} onChange={e => setManagerId(e.target.value)}></input>
-            <button type="submit">Register</button>
+        <form onSubmit={handleRegister} className="space-y-4">
+            <input
+            type="text"
+            placeholder="First name"
+            autoComplete="username"
+            value={firstName}
+            onChange={e => setFirstName(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+            required
+            />
+
+            <input
+            type="text"
+            placeholder="Last name"
+            autoComplete="username"
+            value={lastName}
+            onChange={e => setLastName(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+            required
+            />
+
+            <input
+            type="email"
+            placeholder="Email"
+            autoComplete="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+            required
+            />
+
+            <input
+            type="password"
+            placeholder="Password"
+            autoComplete="new-password"
+            value={password}
+            onChange={e => setPassowrd(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+            required
+            />
+
+            <input
+            type="number"
+            placeholder="Manager Id (optional)"
+            value={managerId}
+            min={0}
+            onChange={e => setManagerId(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+            />
+
+            <button
+            type="submit"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+            >
+            Register
+            </button>
         </form>
-        {msg && <p>{msg}</p>}
+
+        {msg && (
+            <p className="mt-4 text-center text-red-500 font-medium">
+            {msg}
+            </p>
+        )}
         </div>
     )
 }

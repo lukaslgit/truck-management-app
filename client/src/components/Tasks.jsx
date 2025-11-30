@@ -45,17 +45,18 @@ export default function(){
         </div>
 
         <div>
-            <button onClick={() => setFinished(!finished)}>{finished ? 'Current' : 'Finished'}</button>
+            <br></br>
+            <button onClick={() => setFinished(!finished)}>{finished ? 'Switch to Current' : 'Switch to Finished'}</button>
             {tasks && 
             <ul className="flex gap-15">
                 {tasks.map(task => 
                 <li key={task.task_id}>
                     <Link to={`/tasks/${task.task_id}`} >
                     <p>ID: {task.task_id}</p>
-                    <p>START: {task.start_location}</p>
-                    <p>END: {task.end_location}</p>
-                    <p>START: {task.start_time}</p>
-                    <p>END: {task.end_time}</p>
+                    <p>START LOCATION: {task.start_location}</p>
+                    <p>END LOCATION: {task.end_location}</p>
+                    <p>START TIME: {task.start_time}</p>
+                    <p>END TIME: {task.end_time ? task.end_time : 'Not finished yet!'}</p>
                     {task.description ? <p>Desc: {task.description}</p> : <p>Desc: No description</p>}
                     </Link>
                 </li>)}

@@ -39,7 +39,7 @@ export default function(){
   return (
       <div>
         <nav>
-          <ul className='flex gap-5'>
+          <ul className='flex gap-5 items-center py-3 px-20 justify-end'>
             <li>
               <Link to='/'>Home</Link>
             </li>
@@ -59,7 +59,7 @@ export default function(){
               <Link to={'/tasks'}>Tasks</Link>
             </li>}
             {user && <li>
-              <button onClick={handleLogOut}>LogOut</button>
+              <button className='cursor-pointer bg-red-500 hover:bg-red-600 px-2 py-0.5 text-white rounded-md' onClick={handleLogOut}>LogOut</button>
             </li>}
           </ul>
         </nav>

@@ -9,6 +9,7 @@ export default function(){
     const {user, loading} = useAuth()
 
     const [currentTasks, setCurrentTasks] = useState([])
+    const [finishedTasks, setFinishedTasks] = useState([])
 
     useEffect(() => {
         if (!loading){
@@ -26,10 +27,11 @@ export default function(){
 
 
     async function workersTasks(id){
-
         try {
-            const res = await api.get(`/tasks?finished=false&id=${id}`)
-            setCurrentTasks(res.data)
+            const resC = await api.get(`/tasks?finished=false&id=${id}`)
+            setCurrentTasks(resC.data)
+            const resF = await api.get(`/tasks?finished=false&id=${id}`)
+            setFinishedTasks(resF.data)
         } catch (error) {
             console.log(error)
         }
@@ -45,22 +47,24 @@ export default function(){
         <>
         {user &&
         
-        <div>
-            <br></br>
-            <section>
-                <h2>{user.first_name} {user.last_name}</h2>
+        <div className="p-5">
+            <section >
+                <h2 className="text-xl"><span className="font-bold">Hello </span>{user.first_name}!</h2>
             </section>
 
-            <section>
-                <p>{user.role === 'manager' ? `MANAGER ID: ${user.manager_id}` : `WORKER ID: ${user.worker_id}`}</p>
-                <p>Email: {user.email}</p>
+            <section className="my-4 p-2 bg-blue-100 rounded-md w-fit">
+                <p className="font-bold">{user.first_name} {user.last_name}</p>
+                <p className="px-2">Role: {user.role === 'manager' ? 'Manager' : 'Worker'}</p>
+                <p className="px-2">{user.role === 'manager' ? `ID: ${user.manager_id}` : `ID: ${user.worker_id}`}</p>
+                <p className="px-2">Email: {user.email}</p>
             </section>
 
-            <section>
-                {currentTasks && 
+            <section className="py-5">
+                {currentTasks.length == 0 && finishedTasks == 0 &&<div><h2 className="font-bold">You have no tasks!</h2></div>}
+                {currentTasks.length > 0 && 
                 <div>
                     <br></br>
-                    <h2>Your Tasks:</h2>
+                    <h2>Your Current Tasks:</h2>
                     <ul className="flex gap-15">
                         {currentTasks.map(task => 
                         <li key={task.task_id}>
@@ -72,6 +76,10 @@ export default function(){
                             </Link>
                         </li>)}
                     </ul>
+                </div>}
+                {finishedTasks.length > 0 &&
+                <div>
+                    <h2>Your finished tasks:</h2>
                 </div>
                 }
             </section>

@@ -88,6 +88,26 @@ export default function(){
             }
         }
 
+        async function handleFinishTask(id){
+            try {
+                await api.post(`tasks/end/${id}`)
+
+                getTask(id)
+            } catch (error) {
+                setMsg(error.response?.data?.error || 'Something went wrong, please try again later.')
+            }
+        }
+
+        async function handleReopenTask(id) {
+            try {
+                await api.post(`tasks/reopen/${id}`)
+
+                getTask(id)
+            } catch (error) {
+                setMsg(error.response?.data?.error || 'Something went wrong, please try again later.')
+            }
+        }
+
     return(
         <>
             <div>
@@ -107,6 +127,8 @@ export default function(){
                 <br></br>
                 <p>Description:</p>
                 <p>{task.description}</p>
+                <br></br>
+                {task.finished ? <button onClick={() => handleReopenTask(task.task_id)} >REOPEN THE TASK</button> : <button onClick={() => handleFinishTask(task.task_id)} >MARK AS FINISHED</button>}
             </div>}
         </>
     )
