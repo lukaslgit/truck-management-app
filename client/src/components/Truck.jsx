@@ -12,17 +12,40 @@ export default function(){
     const { truckId } = useParams()
     const [msg, setMsg] = useState(null)
     const [truck, setTruck] = useState(null)
+    const [driver, setDriver] = useState(null)
+    const [manager, setManager] = useState(null)
 
     useEffect(() => {
-        if (!user && !loading){
-            navigate('/')
+        if (!loading) {
+            if (!user || user.role !== 'manager') {
+                navigate('/');
+            } else {
+                getTruck(truckId);
+            }
         }
+    }, [user, loading]);
 
-        if(user?.role == 'manager'){
-            getTruck(truckId)
+    async function getDriverById(id) {
+        try {
+            const res = await api.get(`workers/${id}`)
+
+            setDriver(res.data)
+
+        } catch (error) {
+            console.log(error)
         }
-        
-    },[user, loading])
+    }
+
+    async function getManagerById(id) {
+        try {
+            const res = await api.get(`managers/${id}`)
+
+            setManager(res.data)
+
+        } catch (error) {
+            setMsg(error.response?.data?.error || 'Something went wrong, please try again later.')
+        }
+    }
 
     async function getTruck(id){
         try {
@@ -37,29 +60,35 @@ export default function(){
 
             setTruck(res.data)
 
+            getDriverById(res.data.driver_id)
+            getManagerById(res.data.manager_id)
+
+
+
         } catch (error) {
-            
+            setMsg(error.response?.data?.error || 'Something went wrong, please try again later.')
         }
     }
 
     return(
         <div>
-            {truck && 
+            {msg && <p>{msg}</p>}
+            
             <>
                 
                 <div>
                     <Link to={'/trucks'}>BACK</Link>
                 </div>
-
+                {truck && 
                 <div>
                     <p>ID: {truck.truck_id}</p>
                     <p>NAME: {truck.truck_name}</p>
                     <p>VIN: {truck.vin_number}</p>
                     <p>PLATE: {truck.license_plate}</p>
-                    <p>DRIVER: {truck.driver_id}</p>
-                    <p>MANAGER: {truck.manager_id}</p>
-                </div>
-            </>}
+                    <p>DRIVER: {driver ? `${driver.first_name} ${driver.last_name} (ID: ${driver.worker_id})` : 'No driver yet!'}</p>
+                    <p>MANAGER: {manager ? `${manager.first_name} ${manager.last_name} (ID: ${manager.manager_id})` : 'No manager yet!'}</p>
+                </div>}
+            </>
         </div>
     )
 }

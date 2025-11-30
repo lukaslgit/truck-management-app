@@ -12,22 +12,21 @@ export default function(){
     const [trucks, setTrucks] = useState([])
 
     useEffect(() => {
-        if (!user && !loading){
-            navigate('/')
+        if (!loading) {
+            if (!user || user.role !== 'manager') {
+                navigate('/');
+            } else {
+                getAllTrucks();
+            }
         }
-
-        if(user?.role == 'manager'){
-            getAllTrucks()
-        }
-        
-    },[user, loading])
+    }, [user, loading]);
 
     async function getAllTrucks(){
         try {
             const res = await api.get('/trucks')
             setTrucks(res.data)
         } catch (error) {
-            console.log(error)
+            console.log('Server error!')
         }
     }
 

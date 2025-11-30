@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
                 return
             }
 
-            const userData = await pool.query('SELECT worker_id, first_name, email, password FROM workers WHERE email = $1', [email])
+            const userData = await pool.query('SELECT worker_id, first_name, last_name, email, password FROM workers WHERE email = $1', [email])
 
             const hashPassword = userData.rows[0].password
 
@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
                 return
             }
 
-            const token = jwt.sign({'worker_id': userData.rows[0].worker_id, 'name': userData.rows[0].first_name, 'email': userData.rows[0].email, 'role': 'worker'}, process.env.SECRET, {
+            const token = jwt.sign({'worker_id': userData.rows[0].worker_id, 'first_name': userData.rows[0].first_name, 'last_name': userData.rows[0].last_name, 'email': userData.rows[0].email, 'role': 'worker'}, process.env.SECRET, {
                 expiresIn: '5m'
             })
 
@@ -71,6 +71,7 @@ router.post('/login', async (req, res) => {
             res.status(200).json({'message': 'Logged in'})
 
     } catch (error) {
+        console.log(error)
         res.status(500).json({'error': "Something went wrong, please try again!"})
     }
 })
@@ -87,6 +88,30 @@ router.post('/logout', (req, res) => {
         res.status(200).json({'message': 'Log out!'})
     } catch (error) {
         console.log(error)
+    }
+})
+
+// Get worker by id
+router.get('/:id', auth, async (req, res) => {
+
+    const { id } = req.params
+
+    try {
+        if (!id){
+            res.status(400).json({'error': 'No id!'})
+            return
+        }
+
+        const user = await pool.query('SELECT worker_id, first_name, last_name FROM workers WHERE worker_id = $1', [id])
+
+        if(user.rows.length === 0){
+            res.status(400).json({'error': 'Worker does not exist!'})
+            return
+        }
+
+        res.status(200).json(user.rows[0])
+    } catch (error) {
+        res.status(400).json({'error': 'Something went wrong!'})
     }
 })
 

@@ -3,6 +3,7 @@ const router = express.Router()
 import bcrypt from 'bcrypt'
 import { pool } from '../db/db.js'
 import jwt from 'jsonwebtoken'
+import { auth } from '../middlewares/auth.js'
 
 // MANAGER REGISTER
 router.post('/register', async (req, res) => {
@@ -46,7 +47,7 @@ router.post('/login', async (req, res) => {
             return
         }
 
-        const user = await pool.query('SELECT manager_id, first_name, email, password FROM managers WHERE email = $1', [email])
+        const user = await pool.query('SELECT manager_id, first_name, last_name, email, password FROM managers WHERE email = $1', [email])
 
         if(user.rows.length == 0){
             res.status(400).json({'error': 'User does not exist'})
@@ -60,7 +61,7 @@ router.post('/login', async (req, res) => {
             return
         }
 
-        const token = jwt.sign({'manager_id': user.rows[0].manager_id, 'name': user.rows[0].first_name, 'email': user.rows[0].email, 'role': 'manager'}, process.env.SECRET, {
+        const token = jwt.sign({'manager_id': user.rows[0].manager_id, 'first_name': user.rows[0].first_name, 'last_name': user.rows[0].last_name, 'email': user.rows[0].email, 'role': 'manager'}, process.env.SECRET, {
             expiresIn: '30m'
         })
 
@@ -73,6 +74,30 @@ router.post('/login', async (req, res) => {
         res.status(200).json({'message': 'Logged in!'})
     } catch (error) {
         res.status(400).json({'error': 'Something went wrong, please try again later!'})
+    }
+})
+
+// Get manager by id
+router.get('/:id', auth, async (req, res) => {
+
+    const { id } = req.params
+
+    try {
+        if (!id){
+            res.status(400).json({'error': 'No id!'})
+            return
+        }
+
+        const user = await pool.query('SELECT manager_id, first_name, last_name FROM managers WHERE manager_id = $1', [id])
+
+        if(user.rows.length === 0){
+            res.status(400).json({'error': 'Manager does not exist!'})
+            return
+        }
+
+        res.status(200).json(user.rows[0])
+    } catch (error) {
+        console.log(error)
     }
 })
 

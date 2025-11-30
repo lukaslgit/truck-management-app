@@ -12,6 +12,8 @@ export default function(){
         if (!user && !loading){
             navigate('/login')
         }
+
+        console.log(user)
     },[user, loading])
 
     if(loading){
@@ -25,7 +27,7 @@ export default function(){
         {user &&
         <div>
             <section>
-                <h2>{user.name}</h2>
+                <h2>{user.first_name} {user.last_name}</h2>
             </section>
 
             <section>
