@@ -8,6 +8,8 @@ import Profile from './components/Profile'
 import Trucks from './components/Trucks.jsx'
 import RegisterTruck from './components/RegisterTruck.jsx'
 import Truck from './components/Truck.jsx'
+import Tasks from './components/Tasks.jsx'
+import RegisterTask from './components/RegisterTask.jsx'
 
 import api from './api/axios.js'
 import { useAuth } from './context/AuthContext.jsx'
@@ -52,6 +54,9 @@ export default function(){
             {user?.role === 'manager' && <li>
               <Link to={'/trucks'}>Trucks</Link>
             </li>}
+            {user?.role === 'manager' && <li>
+              <Link to={'/tasks'}>Tasks</Link>
+            </li>}
             {user && <li>
               <button onClick={handleLogOut}>LogOut</button>
             </li>}
@@ -66,6 +71,8 @@ export default function(){
           <Route path='/trucks' element={<Trucks />}/>
           <Route path='/trucks/register' element={<RegisterTruck />} />
           <Route path='/trucks/:truckId' element={<Truck />} />
+          <Route path='/tasks' element={<Tasks />} />
+          <Route path='/tasks/register' element={<RegisterTask />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </div>

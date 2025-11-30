@@ -10,6 +10,7 @@ import tests from './routes/test.js'
 import workers from './routes/workers.js'
 import managers from './routes/managers.js'
 import trucks from './routes/trucks.js'
+import tasks from './routes/tasks.js'
 
 const app = express()
 
@@ -36,6 +37,9 @@ app.use('/api/managers', managers)
 
 // TRUCKS ROUTES
 app.use('/api/trucks', trucks)
+
+//TASKS ROUTES
+app.use('/api/tasks', tasks)
 
 
 app.listen(PORT, () => {
