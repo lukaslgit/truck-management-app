@@ -5,7 +5,7 @@ import { pool } from '../db/db.js'
 
 //Register new task
 router.post('/register', auth, async (req, res) => {
-    const { description, start_location, end_location, driver_id, truck_id } = req.body
+    const { description, start_location, end_location, driver_id } = req.body
     
     try {
         if(req.user.role != 'manager'){
@@ -13,10 +13,19 @@ router.post('/register', auth, async (req, res) => {
             return
         }
 
-        if(!description || !start_location || !end_location || !driver_id || !truck_id){
+        if(!description || !start_location || !end_location || !driver_id){
             res.status(400).json({'error': 'All fields must be filled!'})
             return
         }
+
+        const truck_id_data = await pool.query('SELECT truck_id FROM trucks WHERE driver_id = $1', [driver_id])
+
+        if(truck_id_data.rows.length === 0){
+            res.status(400).json({'error': `Driver with ID ${driver_id} does not have truck!`})
+            return
+        }
+
+        const truck_id = truck_id_data.rows[0].truck_id
 
         const time = await pool.query('SELECT NOW()')
 
@@ -36,16 +45,18 @@ router.post('/register', auth, async (req, res) => {
 //Get all tasks
 router.get('/', async (req, res) => {
 
-    const { finished } = req.query
+    const { finished, id } = req.query
 
     try {
-        const data = await pool.query('SELECT * FROM tasks WHERE finished = $1 ORDER BY task_id', [finished])
+        
+        const data = await pool.query(`SELECT * FROM tasks WHERE finished = $1 ${ id ? 'AND driver_id = $2' : ''} ORDER BY task_id`, id ? [finished, id] : [finished])
         res.status(200).json(data.rows)
     } catch (error) {
         console.log(error)
     }
 })
 
+//Get task by id
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params

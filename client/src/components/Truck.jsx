@@ -17,7 +17,7 @@ export default function(){
 
     useEffect(() => {
         if (!loading) {
-            if (!user || user.role !== 'manager') {
+            if (!user) {
                 navigate('/');
             } else {
                 getTruck(truckId);
@@ -57,6 +57,10 @@ export default function(){
             }
 
             const res = await api.get(`trucks/${id}`)
+
+            if(res.data.driver_id != user.worker_id && user.role != 'manager'){
+                navigate('/')
+            }
 
             setTruck(res.data)
 

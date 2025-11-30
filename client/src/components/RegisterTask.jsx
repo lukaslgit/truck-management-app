@@ -14,7 +14,6 @@ export default function(){
     const [startLocation, setStartLocation] = useState('')
     const [endLocation, setEndLocation] = useState('')
     const [driverId, setDriverId] = useState('')
-    const [truckId, setTruckId] = useState('')
 
     useEffect(() => {
         if (!loading) {
@@ -30,22 +29,22 @@ export default function(){
 
         try {
             setMsg(null)
-            if(!description || !startLocation || !endLocation || !driverId || !truckId){
+            if(!description || !startLocation || !endLocation || !driverId){
                 setMsg('All fields must be filled!')
                 return
             }
 
-            const res = await api.post('/tasks/register', {'description': description, 'start_location': startLocation, 'end_location': endLocation, 'driver_id': driverId, 'truck_id': truckId})
+            const res = await api.post('/tasks/register', {'description': description, 'start_location': startLocation, 'end_location': endLocation, 'driver_id': driverId})
 
             setDescription('')
             setStartLocation('')
             setEndLocation('')
             setDriverId('')
-            setTruckId('')
 
             setMsg(res.data.message)
 
         } catch (error) {
+            console.log(error)
             setMsg(error.response?.data?.error || 'Something went wrong, please try again later.')
         }
     }
@@ -57,7 +56,6 @@ export default function(){
                 <input placeholder='start_location' value={startLocation} onChange={e => setStartLocation(e.target.value)}></input>
                 <input placeholder='end_location' value={endLocation} onChange={e => setEndLocation(e.target.value)}></input>
                 <input placeholder='driver_id' value={driverId} onChange={e => setDriverId(e.target.value)}></input>
-                <input placeholder='truck_id' value={truckId} onChange={e => setTruckId(e.target.value)}></input>
                 <button type='submit'>Add Task</button>
             </form>
             {msg && <p>{msg}</p>}

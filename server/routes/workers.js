@@ -60,13 +60,13 @@ router.post('/login', async (req, res) => {
             }
 
             const token = jwt.sign({'worker_id': userData.rows[0].worker_id, 'first_name': userData.rows[0].first_name, 'last_name': userData.rows[0].last_name, 'email': userData.rows[0].email, 'role': 'worker'}, process.env.SECRET, {
-                expiresIn: '5m'
+                expiresIn: '30m'
             })
 
             res.cookie('token', token, {
                 httpOnly: true,
                 sameSite: "strict",
-                maxAge: 5 * 60 * 1000
+                maxAge: 30 * 60 * 1000
             })
             res.status(200).json({'message': 'Logged in'})
 

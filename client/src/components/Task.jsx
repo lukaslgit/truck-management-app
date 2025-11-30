@@ -18,7 +18,7 @@ export default function(){
 
     useEffect(() => {
             if (!loading) {
-                if (!user || user.role !== 'manager') {
+                if (!user) {
                     navigate('/');
                 } else {
                     getTask(taskId);
@@ -31,7 +31,6 @@ export default function(){
                 const res = await api.get(`workers/${id}`)
     
                 setDriver(res.data)
-                console.log(res.data)
     
             } catch (error) {
                 console.log(error)
@@ -43,7 +42,6 @@ export default function(){
                 const res = await api.get(`managers/${id}`)
         
                 setManager(res.data)
-                console.log(res.data)
         
             } catch (error) {
                 setMsg(error.response?.data?.error || 'Something went wrong, please try again later.')
@@ -56,8 +54,6 @@ export default function(){
                 const res = await api.get(`/trucks/${id}`)
 
                 setTruck(res.data)
-
-                console.log(res.data)
 
             } catch (error) {
                 console.log(error)
@@ -77,7 +73,10 @@ export default function(){
     
                 setTask(res.data)
 
-                console.log(res.data)
+                if (user.role != 'manager' && res.data.driver_id != user.worker_id) {
+                    navigate('/')
+                    return
+                }
     
                 getDriverById(res.data.driver_id)
                 getManagerById(res.data.manager_id)
@@ -96,6 +95,7 @@ export default function(){
             </div>
 
             {task && <div>
+                <br></br>
                 <p>ID: {task.task_id}</p>
                 <p>Start location: {task.start_location}</p>
                 <p>End location: {task.end_location}</p>
@@ -103,7 +103,7 @@ export default function(){
                 <p>End time: {task.end_time ? task.end_time : 'Not finished yet!'}</p>
                 <p>Driver: {driver?.first_name} {driver?.last_name} (Worker ID: {task.driver_id})</p>
                 <p>Manager: {manager?.first_name} {manager?.last_name} (Manager ID: {task.manager_id})</p>
-                <Link to={`/trucks/${task.truck_id}`} ><p>Truck: {truck?.truck_name} (ID: {task.truck_id}) </p></Link>
+                <Link to={`/trucks/${task.truck_id}`} ><p>Truck: {truck?.truck_name} (Truck ID: {task.truck_id}) </p></Link>
                 <br></br>
                 <p>Description:</p>
                 <p>{task.description}</p>
