@@ -30,7 +30,7 @@ export default function(){
         try {
             const resC = await api.get(`/tasks?finished=false&id=${id}`)
             setCurrentTasks(resC.data)
-            const resF = await api.get(`/tasks?finished=false&id=${id}`)
+            const resF = await api.get(`/tasks?finished=true&id=${id}`)
             setFinishedTasks(resF.data)
         } catch (error) {
             console.log(error)
@@ -61,10 +61,11 @@ export default function(){
 
             <section className="py-5">
                 {currentTasks.length == 0 && finishedTasks == 0 &&<div><h2 className="font-bold">You have no tasks!</h2></div>}
+                {currentTasks.length == 0 && <div><h2 className="font-bold">You have no current tasks!</h2></div>}
                 {currentTasks.length > 0 && 
                 <div>
                     <br></br>
-                    <h2>Your Current Tasks:</h2>
+                    <h2 className="font-bold">Your Current Tasks:</h2>
                     <ul className="flex gap-15">
                         {currentTasks.map(task => 
                         <li key={task.task_id}>
@@ -78,8 +79,19 @@ export default function(){
                     </ul>
                 </div>}
                 {finishedTasks.length > 0 &&
-                <div>
-                    <h2>Your finished tasks:</h2>
+                <div className="my-5">
+                    <h2 className="font-bold">Your finished tasks:</h2>
+                    <ul className="flex gap-15">
+                        {finishedTasks.map(task => 
+                        <li key={task.task_id}>
+                            <Link to={`/tasks/${task.task_id}`}>
+                            <p>Start time: {new Date(task.start_time).toLocaleString('en-EN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                            <p>FROM: {task.start_location}</p>
+                            <p>TO: {task.end_location}</p>
+                            <p>See more details...</p>
+                            </Link>
+                        </li>)}
+                    </ul>
                 </div>
                 }
             </section>

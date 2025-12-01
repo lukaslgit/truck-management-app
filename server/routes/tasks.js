@@ -51,9 +51,30 @@ router.get('/', async (req, res) => {
         const data = await pool.query(`SELECT * FROM tasks WHERE finished = $1 ${ id ? 'AND driver_id = $2' : ''} ORDER BY task_id`, id ? [finished, id] : [finished])
         res.status(200).json(data.rows)
     } catch (error) {
-        console.log(error)
+        res.status(400).json({'error': 'Something went wrong, please try again later!'})
     }
 })
+
+// Search for task
+router.get('/search', auth, async (req, res) => {
+
+    const { text, finished } = req.query
+
+    try {
+        if(req.user.role != 'manager'){
+            res.status(400).json({'error': 'Only managers can search for tasks!'})
+            return
+        }
+
+        const data = await pool.query('SELECT * FROM tasks WHERE (start_location ILIKE $1 OR end_location ILIKE $1) AND finished = $2', [`%${text}%`, finished])
+
+        res.status(200).json(data.rows)
+
+    } catch (error) {
+        res.status(400).json({'error': 'Something went wrong, please try again later!'})
+    }
+})
+
 
 //Get task by id
 router.get('/:id', async (req, res) => {
@@ -80,7 +101,7 @@ router.post('/end/:id', auth, async (req, res) => {
     const { id } = req.params
     try {
 
-        const driverMatch = await pool.query('SELECT driver_id FROM trucks WHERE truck_id = $1', [id])
+        const driverMatch = await pool.query('SELECT driver_id FROM tasks WHERE task_id = $1', [id])
 
         if(req.user.role != 'manager' && req.user.worker_id != driverMatch.rows[0]?.driver_id){
             res.status(400).json({'error': 'Only manager or tasks truck driver can finish the task!'})
@@ -101,7 +122,7 @@ router.post('/reopen/:id', auth, async (req, res) => {
     const { id } = req.params
     try {
 
-        const driverMatch = await pool.query('SELECT driver_id FROM trucks WHERE truck_id = $1', [id])
+        const driverMatch = await pool.query('SELECT driver_id FROM tasks WHERE task_id = $1', [id])
 
         if(req.user.role != 'manager' && req.user.worker_id != driverMatch.rows[0].driver_id){
             res.status(400).json({'error': 'Only manager can update this task!'})
@@ -112,8 +133,9 @@ router.post('/reopen/:id', auth, async (req, res) => {
 
         res.status(200).json({'message': `Task with id: ${updatedTask.rows[0].task_id} was updated!`})
     } catch (error) {
-        console.log(error)
+        res.status(400).json({'error': 'Something went wrong, please try again later!'})
     }
 })
+
 
 export default router

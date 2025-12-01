@@ -116,14 +116,14 @@ export default function(){
 
             {task && <div>
                 <br></br>
-                <p>ID: {task.task_id}</p>
-                <p>Start location: {task.start_location}</p>
-                <p>End location: {task.end_location}</p>
-                <p>Start time: {task.start_time}</p>
-                <p>End time: {task.end_time ? task.end_time : 'Not finished yet!'}</p>
-                <p>Driver: {driver?.first_name} {driver?.last_name} (Worker ID: {task.driver_id})</p>
-                <p>Manager: {manager?.first_name} {manager?.last_name} (Manager ID: {task.manager_id})</p>
-                <Link to={`/trucks/${task.truck_id}`} ><p>Truck: {truck?.truck_name} (Truck ID: {task.truck_id}) </p></Link>
+                <p><span className="font-bold">ID:</span> {task.task_id}</p>
+                <p><span className="font-bold">Start location:</span> {task.start_location}</p>
+                <p><span className="font-bold">End location:</span> {task.end_location}</p>
+                <p><span className="font-bold">Start time:</span> {new Date(task.start_time).toLocaleString('en-GB', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}</p>
+                <p><span className="font-bold">End time:</span> {task.end_time ? new Date(task.end_time).toLocaleString('en-GB', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) : 'Not finished yet!'}</p>
+                <p><span className="font-bold">Driver:</span> {driver?.first_name} {driver?.last_name} (Worker ID: {task.driver_id})</p>
+                <p><span className="font-bold">Manager:</span> {manager?.first_name} {manager?.last_name} (Manager ID: {task.manager_id})</p>
+                <Link to={`/trucks/${task.truck_id}`} ><p><span className="font-bold">Truck:</span> {truck?.truck_name} (Truck ID: {task.truck_id}) </p></Link>
                 <br></br>
                 <p>Description:</p>
                 <p>{task.description}</p>
