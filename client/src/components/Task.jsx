@@ -15,6 +15,9 @@ export default function(){
     const [driver, setDriver] = useState(null)
     const [manager, setManager] = useState(null)
     const [truck, setTruck] = useState(null)
+    const [notes, setNotes] = useState([])
+
+    const [newNote, setNewNote] = useState('')
 
     useEffect(() => {
             if (!loading) {
@@ -22,6 +25,7 @@ export default function(){
                     navigate('/');
                 } else {
                     getTask(taskId);
+                    getNotes(taskId)
                 }
             }
         }, [user, loading]);
@@ -29,7 +33,7 @@ export default function(){
         async function getDriverById(id){
             try {
                 const res = await api.get(`workers/${id}`)
-    
+
                 setDriver(res.data)
     
             } catch (error) {
@@ -108,8 +112,54 @@ export default function(){
             }
         }
 
+        async function getNotes(id) {
+            try {
+                const res = await api.get(`notes/${id}`)
+                const fetchedNotes = res.data
+
+                const updatedNotes = await Promise.all(
+                    fetchedNotes.map(async note => {
+                        if (note.manager_id) {
+                            const managerRes = await api.get(`managers/${note.manager_id}`)
+                            note.manager_name = managerRes.data.first_name + ' ' + managerRes.data.last_name
+                        }
+                        return note
+                    })
+                )
+
+                setNotes(updatedNotes)
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        async function handleRegisterTask(e){
+            e.preventDefault()
+
+            try {
+                setMsg(null)
+
+                if(!newNote){
+                    setMsg('You have to enter something!')
+                    return
+                }
+
+                if(user.role == 'manager'){
+                    await api.post('/notes/register', {"note_text": newNote, "task_id": taskId, "manager_id": user.manager_id})
+                } else {
+                    await api.post('/notes/register', {"note_text": newNote, "task_id": taskId, "worker_id": user.worker_id})
+                }
+
+                getNotes(taskId)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+
     return(
-        <>
+        <div className="p-10">
             <div>
                 {msg && <p>{msg}</p>}
             </div>
@@ -128,8 +178,29 @@ export default function(){
                 <p>Description:</p>
                 <p>{task.description}</p>
                 <br></br>
-                {task.finished ? <button onClick={() => handleReopenTask(task.task_id)} >REOPEN THE TASK</button> : <button onClick={() => handleFinishTask(task.task_id)} >MARK AS FINISHED</button>}
+                {task.finished ? <button className="font-bold" onClick={() => handleReopenTask(task.task_id)} >REOPEN THE TASK</button> : <button className="font-bold" onClick={() => handleFinishTask(task.task_id)} >MARK AS FINISHED</button>}
+
+
+                <form onSubmit={handleRegisterTask}>
+                    <br></br>
+                    <p className="font-bold">WRITE NEW NOTE:</p>
+                    <textarea placeholder="NEW NOTE" rows={4} value={newNote} onChange={e => setNewNote(e.target.value)}></textarea>
+                    <button type="submit">ADD NOTE</button>
+                </form>
+
+                {notes &&
+                <ul>
+                    <br></br>
+                    {notes.map(note => <li key={note.note_id}>
+                        <p>Author: {note.manager_id ? note.manager_name : driver?.first_name + ' ' + driver?.last_name}</p>
+                        <p>Message: {note.note_text}</p>
+                        <br></br>
+                    </li>)}
+                </ul>
+                }
+
+
             </div>}
-        </>
+        </div>
     )
 }
