@@ -59,6 +59,7 @@ export default function(){
                 <p className="px-2">Email: {user.email}</p>
             </section>
 
+            {user.role == 'worker' && 
             <section className="py-5">
                 {currentTasks.length == 0 && finishedTasks == 0 &&<div><h2 className="font-bold">You have no tasks!</h2></div>}
                 {currentTasks.length == 0 && <div><h2 className="font-bold">You have no current tasks!</h2></div>}
@@ -70,7 +71,7 @@ export default function(){
                         {currentTasks.map(task => 
                         <li key={task.task_id}>
                             <Link to={`/tasks/${task.task_id}`}>
-                            <p>{task.start_time}</p>
+                            <p>{new Date(task.start_time).toLocaleString('en-EN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
                             <p>FROM: {task.start_location}</p>
                             <p>TO: {task.end_location}</p>
                             <p>See more details...</p>
@@ -94,7 +95,13 @@ export default function(){
                     </ul>
                 </div>
                 }
+            </section>}
+            {user.role == 'manager' &&
+            <section>
+                <p>MANAGER STUF (Your Team Members, tasks created by you, etc.)</p>
+                <p>(WIP)</p>
             </section>
+            }
         </div>
         }
         </>

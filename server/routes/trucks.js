@@ -28,6 +28,22 @@ router.post('/register', auth, async (req, res) => {
             return
         }
 
+        const driverHasTruck = await pool.query('SELECT COUNT(*) FROM trucks WHERE driver_id = $1', [driver_id])
+
+        if(driverHasTruck.rows[0].count > 0){
+            res.status(400).json({'error': `Driver with ID: ${driver_id} already has truck!`})
+            return
+        }
+
+        const driverExists = await pool.query('SELECT COUNT(*) FROM workers WHERE worker_id = $1', [driver_id])
+
+        if (driverExists.rows[0].count == 0){
+            res.status(400).json({'error': `Driver with ID: ${driver_id} does not exists!`})
+            return
+        }
+
+
+
         const newTruck = await pool.query('INSERT INTO trucks (truck_name, vin_number, license_plate, driver_id, manager_id) VALUES ($1, $2, $3, $4, $5) RETURNING truck_name', [truck_name, vin_number, license_plate, driver_id, manager_id])
 
         res.status(200).json({'message': `${newTruck.rows[0].truck_name} was registered!`})

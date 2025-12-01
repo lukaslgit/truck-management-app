@@ -151,6 +151,8 @@ export default function(){
                     await api.post('/notes/register', {"note_text": newNote, "task_id": taskId, "worker_id": user.worker_id})
                 }
 
+                setNewNote('')
+
                 getNotes(taskId)
             } catch (error) {
                 console.log(error)

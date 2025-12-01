@@ -3,8 +3,6 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
-import { pool } from './db/db.js';
-
 //Routes
 import tests from './routes/test.js'
 import workers from './routes/workers.js'

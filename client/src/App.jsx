@@ -37,7 +37,7 @@ export default function(){
   const navigate = useNavigate()
 
   return (
-      <div>
+      <div className="flex flex-col min-h-screen">
         <nav>
           <ul className='flex gap-5 items-center py-3 px-20 justify-end'>
             <li>
@@ -64,7 +64,8 @@ export default function(){
           </ul>
         </nav>
 
-        <Routes>
+        <div className="flex-grow px-8 py-6">
+        <Routes >
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
@@ -77,6 +78,13 @@ export default function(){
           <Route path='/tasks/:taskId' element={<Task />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
+        </div>
+
+      <footer className="bg-gray-800 text-white text-center py-4 mt-4 md:mt-8 shadow-inner flex flex-col items-center gap-2">
+        <p className="text-sm font-semibold">TRUCK MANAGEMENT APP</p>
+        <p className="text-sm font-semibold">Lukas Lutonsky</p>
+        <a href="https://github.com/lukaslgit/truck-management-app" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-500 transition-colors">GITHUB</a>
+      </footer>
       </div>
   );
 }
