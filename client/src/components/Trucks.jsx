@@ -10,7 +10,7 @@ export default function(){
     const { user, loading } = useAuth()
 
     const [trucks, setTrucks] = useState([])
-    const [searchTruck, setSearchTruck] = useState('')
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         if (!loading) {
@@ -18,9 +18,21 @@ export default function(){
                 navigate('/');
             } else {
                 getAllTrucks();
+                setSearch('')
             }
         }
     }, [user, loading]);
+
+
+    useEffect(() => {
+        if(search.length > 3){
+            handleSearch()
+        }
+
+        if(search.length === 0){
+            getAllTrucks()
+        }
+    }, [search])
 
     async function getAllTrucks(){
         try {
@@ -31,6 +43,20 @@ export default function(){
         }
     }
 
+    async function handleSearch(){
+            if(!search || search.length < 3){
+                return
+            }
+    
+            try {
+                const res = await api.get(`http://localhost:8000/api/trucks/search?text=${search}`)
+    
+                setTrucks(res.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
     
     return(
         <div className="flex justify-center min-h-screen items-start pt-20">
@@ -39,8 +65,8 @@ export default function(){
             <div className="flex justify-between items-center">
             <div>
                 <input
-                value={searchTruck}
-                onChange={e => setSearchTruck(e.target.value)}
+                value={search}
+                onChange={e => setSearch(e.target.value)}
                 type="text"
                 placeholder="Search trucks..."
                 className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"

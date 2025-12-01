@@ -250,6 +250,10 @@ export default function(){
                                         key={note.note_id}
                                         className="bg-gray-100 p-4 rounded-md border border-gray-300"
                                     >
+                                        {new Date(note.created_at).toLocaleString("en-GB", {
+                                            year: "numeric", month: "long", day: "numeric",
+                                            hour: "2-digit", minute: "2-digit", hour12: false
+                                        })}
                                         <p className="font-semibold">
                                             Author:{" "}
                                             {note.manager_id
