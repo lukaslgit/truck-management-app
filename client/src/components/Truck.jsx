@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import api from '../api/axios.js'
 
@@ -71,25 +71,46 @@ export default function(){
 
         } catch (error) {
             setMsg(error.response?.data?.error || 'Something went wrong, please try again later.')
+            navigate('/trucks')
         }
     }
 
     return(
-        <div>
-            {msg && <p>{msg}</p>}
-            
-            <>
-                
-                {truck && 
-                <div>
-                    <p>ID: {truck.truck_id}</p>
-                    <p>NAME: {truck.truck_name}</p>
-                    <p>VIN: {truck.vin_number}</p>
-                    <p>PLATE: {truck.license_plate}</p>
-                    <p>DRIVER: {driver ? `${driver.first_name} ${driver.last_name} (ID: ${driver.worker_id})` : 'No driver yet!'}</p>
-                    <p>MANAGER: {manager ? `${manager.first_name} ${manager.last_name} (ID: ${manager.manager_id})` : 'No manager yet!'}</p>
-                </div>}
-            </>
-        </div>
+<div className="flex justify-center min-h-screen items-start pt-20">
+  <div className="bg-sky-100 p-8 rounded-xl w-full max-w-3xl space-y-6">
+
+    {msg && (
+      <div className="bg-blue-100 border border-blue-300 text-blue-700 p-3 rounded-md">
+        {msg}
+      </div>
+    )}
+
+    {truck && (
+      <div className="bg-white p-6 rounded-lg shadow space-y-4">
+
+        <p><span className="font-semibold">ID:</span> {truck.truck_id}</p>
+        <p><span className="font-semibold">Name:</span> {truck.truck_name}</p>
+        <p><span className="font-semibold">VIN:</span> {truck.vin_number}</p>
+        <p><span className="font-semibold">License Plate:</span> {truck.license_plate}</p>
+
+        <p>
+          <span className="font-semibold">Driver:</span>{" "}
+          {driver ? `${driver.first_name} ${driver.last_name} (ID: ${driver.worker_id})` : 'No driver yet!'}
+        </p>
+
+        <p>
+          <span className="font-semibold">Manager:</span>{" "}
+          {manager ? `${manager.first_name} ${manager.last_name} (ID: ${manager.manager_id})` : 'No manager yet!'}
+        </p>
+
+        <Link to="/trucks" className="text-blue-600 hover:underline font-medium">Back to all trucks</Link>
+
+      </div>
+    )}
+
+  </div>
+</div>
+
+
     )
 }

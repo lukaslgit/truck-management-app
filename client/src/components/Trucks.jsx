@@ -10,6 +10,7 @@ export default function(){
     const { user, loading } = useAuth()
 
     const [trucks, setTrucks] = useState([])
+    const [searchTruck, setSearchTruck] = useState('')
 
     useEffect(() => {
         if (!loading) {
@@ -32,24 +33,47 @@ export default function(){
 
     
     return(
-        <>
+        <div className="flex justify-center min-h-screen items-start pt-20">
+        <div className="bg-sky-100 p-8 rounded-xl w-full max-w-3xl space-y-6">
+
+            <div className="flex justify-between items-center">
             <div>
-                <div>SEARCHBAR</div>
-                <div><Link to={'/trucks/register'}>ADD NEW TRUCK</Link></div>
+                <input
+                value={searchTruck}
+                onChange={e => setSearchTruck(e.target.value)}
+                type="text"
+                placeholder="Search trucks..."
+                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+                />
             </div>
             <div>
-                {trucks && <div>
-                    <ul className="flex gap-10">
-                        {trucks.map(truck => 
-                        <li key={truck.truck_id}>
-                            <Link to={`/trucks/${truck.truck_id}`}>
-                                <p>(ID: {truck.truck_id}) {truck.truck_name}</p>
-                                <p>{truck.license_plate}</p>
-                            </Link>
-                        </li>)}
-                    </ul>
-                </div>}
+                <Link
+                to={'/trucks/register'}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+                >ADD NEW TRUCK</Link>
             </div>
-        </>
+            </div>
+
+            {trucks && (
+            <ul className="space-y-4">
+                {trucks.map(truck => (
+                <li
+                    key={truck.truck_id}
+                    className="bg-white p-4 rounded-md shadow hover:shadow-md transition-shadow"
+                >
+                    <Link to={`/trucks/${truck.truck_id}`} className="block space-y-1">
+                    <p><span className="font-semibold">ID:</span> {truck.truck_id}</p>
+                    <p><span className="font-semibold">Name:</span> {truck.truck_name}</p>
+                    <p><span className="font-semibold">License Plate:</span> {truck.license_plate}</p>
+                    <p className="text-blue-500 font-medium">See more details...</p>
+                    </Link>
+                </li>
+                ))}
+            </ul>
+            )}
+
+        </div>
+        </div>
+
     )
 }
