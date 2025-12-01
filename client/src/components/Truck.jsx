@@ -103,7 +103,7 @@ export default function(){
           {manager ? `${manager.first_name} ${manager.last_name} (ID: ${manager.manager_id})` : 'No manager yet!'}
         </p>
 
-        <Link to="/trucks" className="text-blue-600 hover:underline font-medium">Back to all trucks</Link>
+        {user.role == 'manager' && <Link to="/trucks" className="text-blue-600 hover:underline font-medium">Back to all trucks</Link>}
 
       </div>
     )}

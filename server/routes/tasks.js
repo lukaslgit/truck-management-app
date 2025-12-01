@@ -34,7 +34,7 @@ router.post('/register', auth, async (req, res) => {
 
         const newTask = await pool.query('INSERT INTO tasks (description, start_location, end_location, start_time, driver_id, truck_id, manager_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING description', [description, start_location, end_location, start_time, driver_id, truck_id, manager_id])
 
-        res.status(200).json({'message': `Task '${newTask.rows[0].description}' was added!`})
+        res.status(200).json({'message': 'Task was added!'})
 
     } catch (error) {
         res.status(400).json({'error': 'Something went wrong, please try again later.'})
