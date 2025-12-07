@@ -7,7 +7,7 @@ import { AuthProvider } from './context/AuthContext.jsx'
 const root = createRoot(document.getElementById('root'))
 
 root.render(
-    <Router>
+    <Router basename="/projects/truck_managment_app">
         <AuthProvider>
             <App />
         </AuthProvider>
