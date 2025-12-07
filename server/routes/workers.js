@@ -65,6 +65,7 @@ router.post('/login', async (req, res) => {
 
             res.cookie('token', token, {
                 httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
                 sameSite: "strict",
                 maxAge: 30 * 60 * 1000
             })
@@ -110,6 +111,15 @@ router.get('/:id', auth, async (req, res) => {
         }
 
         res.status(200).json(user.rows[0])
+    } catch (error) {
+        res.status(400).json({'error': 'Something went wrong!'})
+    }
+})
+
+router.get('/', auth, async (req, res) => {
+    try {
+        const workers_data = await pool.query('SELECT worker_id, first_name, last_name FROM workers')
+        res.status(200).json(workers_data.rows)
     } catch (error) {
         res.status(400).json({'error': 'Something went wrong!'})
     }
