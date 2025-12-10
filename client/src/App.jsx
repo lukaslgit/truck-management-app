@@ -11,6 +11,8 @@ import Truck from './components/Truck.jsx'
 import Tasks from './components/Tasks.jsx'
 import RegisterTask from './components/RegisterTask.jsx'
 import Task from './components/Task.jsx'
+import Workers from './components/Workers.jsx'
+import Worker from './components/Worker.jsx'
 
 import api from './api/axios.js'
 import { useAuth } from './context/AuthContext.jsx'
@@ -58,6 +60,9 @@ export default function(){
             {user?.role === 'manager' && <li>
               <Link to={'/tasks'}>Tasks</Link>
             </li>}
+            {user?.role === 'manager' && <li>
+              <Link to={'/workers'}>Workers</Link>
+            </li>}
             {user && <li>
               <button className='cursor-pointer bg-red-500 hover:bg-red-600 px-2 py-0.5 text-white rounded-md' onClick={handleLogOut}>LogOut</button>
             </li>}
@@ -76,6 +81,8 @@ export default function(){
           <Route path='/tasks' element={<Tasks />} />
           <Route path='/tasks/register' element={<RegisterTask />} />
           <Route path='/tasks/:taskId' element={<Task />} />
+          <Route path='/workers' element={<Workers />} />
+          <Route path='/workers/:workerId' element={<Worker />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
         </div>

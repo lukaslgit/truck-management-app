@@ -92,6 +92,48 @@ router.post('/logout', (req, res) => {
     }
 })
 
+
+// Search for workers
+router.get('/search', auth, async (req, res) => {
+    const { text } = req.query
+
+    try {
+        if(req.user.role != 'manager'){
+            res.status(400).json({'error': 'Only managers can search for workers!'})
+            return
+        }
+
+        const data = await pool.query(`SELECT * FROM workers WHERE (first_name || ' ' || last_name) ILIKE $1`, [`%${text.trim().replace(/\s+/g, ' ')}%`])
+
+
+        res.status(200).json(data.rows)
+
+    } catch (error) {
+        res.status(400).json({'error': 'Something went wrong, please try again later!'})
+    }
+})
+
+// Has the worker truck
+router.get('/hastruck', auth, async (req, res) => {
+    const { workerId } = req.query
+
+    try {
+        const hasTruck = await pool.query('SELECT COUNT(*) FROM trucks WHERE driver_id = $1', [workerId])
+
+
+        if (hasTruck.rows[0].count == 0){
+            res.status(200).json(null)
+            return
+        }
+
+        const truckId = await pool.query('SELECT truck_id, truck_name FROM trucks WHERE driver_id = $1', [workerId])
+
+        res.status(200).json(truckId.rows[0])
+    } catch (error) {
+        res.status(400).json({'error': 'Something went wrong, please try again later!'})
+    }
+})
+
 // Get worker by id
 router.get('/:id', auth, async (req, res) => {
 
@@ -116,6 +158,7 @@ router.get('/:id', auth, async (req, res) => {
     }
 })
 
+// Get all workers
 router.get('/', auth, async (req, res) => {
     try {
         const workers_data = await pool.query('SELECT worker_id, first_name, last_name FROM workers')

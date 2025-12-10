@@ -75,7 +75,7 @@ router.get('/search', auth, async (req, res) => {
             return
         }
 
-        const data = await pool.query('SELECT * FROM trucks WHERE truck_name ILIKE $1 OR license_plate ILIKE $1', [`%${text}%`])
+        const data = await pool.query('SELECT * FROM trucks WHERE truck_name ILIKE $1 OR license_plate ILIKE $1', [`%${text.trim().replace(/\s+/g, ' ')}%`])
 
 
         res.status(200).json(data.rows)
