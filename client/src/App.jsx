@@ -43,7 +43,7 @@ export default function(){
         <nav>
           <ul className='flex gap-5 items-center py-3 px-20 justify-end'>
             <li>
-              <Link to='/'>Home</Link>
+              <Link to='//'>Home</Link>
             </li>
             {!user && <li>
               <Link to='/login'>Login</Link>

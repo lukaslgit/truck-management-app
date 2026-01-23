@@ -4,11 +4,14 @@ import bcrypt from 'bcrypt'
 import { pool } from '../db/db.js'
 import jwt from 'jsonwebtoken'
 import { auth } from '../middlewares/auth.js'
+import dotenv from 'dotenv';
+
+dotenv.config()
 
 // MANAGER REGISTER
 router.post('/register', async (req, res) => {
     const {first_name, last_name, email, password, key} = req.body
-    const managerSecretKey = 123456 // TODO ADD REAL KEY TO ENV OR TO DATABASE
+    const managerSecretKey = process.env.MANAGERKEY // TODO ADD REAL KEY TO ENV OR TO DATABASE
     try {
         if (!first_name || !last_name || !email || !password || !key){
             res.status(400).json({'error': 'All fields must be filled!'})
