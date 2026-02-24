@@ -37,7 +37,7 @@ export default function(){
                 </h2>
                 <button
                     onClick={() => setIsManager(!isManager)}
-                    className="bg-slate-500 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+                    className="cursor-pointer bg-slate-500 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
                 >
                     REGISTER AS {isManager ? 'WORKER' : 'MANAGER'}
                 </button>

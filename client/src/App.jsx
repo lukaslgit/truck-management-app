@@ -40,7 +40,7 @@ export default function(){
 
   return (
       <div className="flex flex-col min-h-screen">
-        <nav>
+        <nav className='bg-gray-800 text-white'>
           <ul className='flex gap-5 items-center py-3 px-20 justify-end'>
             <li>
               <Link to='//'>Home</Link>
@@ -69,7 +69,7 @@ export default function(){
           </ul>
         </nav>
 
-        <div className="flex-grow px-8 py-6">
+        <div className="grow px-8 py-6">
         <Routes >
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />

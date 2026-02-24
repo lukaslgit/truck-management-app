@@ -56,7 +56,7 @@ export default function(){
                 required
             />
 
-            <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors">LOGIN</button>
+            <button type="submit" className="cursor-pointer w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors">LOGIN</button>
             </form>
 
             {error && <p>{error}</p>}
