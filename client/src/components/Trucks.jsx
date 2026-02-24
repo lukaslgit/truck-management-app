@@ -49,7 +49,7 @@ export default function(){
             }
     
             try {
-                const res = await api.get(`http://localhost:8000/api/trucks/search?text=${search}`)
+                const res = await api.get(`/trucks/search?text=${search}`)
     
                 setTrucks(res.data)
             } catch (error) {

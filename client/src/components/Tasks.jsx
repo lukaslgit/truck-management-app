@@ -50,7 +50,7 @@ export default function(){
         }
 
         try {
-            const res = await api.get(`http://localhost:8000/api/tasks/search?text=${search}&finished=${finished}`)
+            const res = await api.get(`/tasks/search?text=${search}&finished=${finished}`)
 
             setTasks(res.data)
         } catch (error) {
