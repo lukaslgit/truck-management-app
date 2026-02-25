@@ -47,7 +47,7 @@ export default function(){
         <>
         {user &&
         
-        <div className="p-5">
+        <div className="p-5 h-screen">
             <section >
                 <h2 className="text-xl"><span className="font-bold">Hello </span>{user.first_name}!</h2>
             </section>

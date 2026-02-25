@@ -39,17 +39,17 @@ export default function(){
   const navigate = useNavigate()
 
   return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col">
         <nav className='bg-gray-800 text-white'>
-          <ul className='flex gap-5 items-center py-3 px-20 justify-end'>
+          <ul className='flex gap-5 items-center py-3 px-20 justify-end h-15 font-bold'>
             <li>
-              <Link to='//'>Home</Link>
+              <Link to='//'>HOME</Link>
             </li>
             {!user && <li>
-              <Link to='/login'>Login</Link>
+              <Link to='/login'>LOGIN</Link>
             </li>}
             {!user && <li>
-              <Link to='/register'>Register</Link>
+              <Link to='/register'>REGISTER</Link>
             </li>}
             {user && <li>
               <Link to={'/profile'}>Profile</Link>
@@ -69,7 +69,7 @@ export default function(){
           </ul>
         </nav>
 
-        <div className="grow px-8 py-6">
+        <div className="grow">
         <Routes >
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
