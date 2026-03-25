@@ -37,24 +37,26 @@ export default function(){
 
     return (
         <div>
-            <form onSubmit={handleLogin} className="space-y-4">
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
-                required
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
-                required
-            />
-            <button type="submit" className="cursor-pointer w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors">LOGIN</button>
+            <form onSubmit={handleLogin} className="flex flex-col">
+                <div className='flex flex-col gap-3'>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        className="min-w-50 mx-auto border-2 border-gray-600 px-5 py-1 rounded-md"
+                        required
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        className="min-w-50 mx-auto border-2 border-gray-600 px-5 py-1 rounded-md"
+                        required
+                    />
+                </div>
+            <button type="submit" className="m-auto mt-10 bg-gray-800 min-w-50 text-white px-5 py-1 rounded-md text-md cursor-pointer hover:bg-gray-600 transition-colors">LOG IN</button>
             </form>
 
             {error && <p>{error}</p>}
