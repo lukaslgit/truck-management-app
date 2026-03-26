@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"
 import Manager from "./Register/Manager.jsx"
 import Worker from "./Register/Worker.jsx"
 import { useAuth } from "../context/AuthContext.jsx"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
+import truckbg from '../assets/truckbg.jpg'
 
 export default function(){
 
@@ -28,25 +29,25 @@ export default function(){
     }
 
     return(
-        <div className="flex items-center justify-center min-h-screen">
-            <div className="bg-sky-100 p-8 rounded-xl shadow-lg w-full max-w-md">
-                
-                <div className="mb-6 text-center ">
-                <h2 className="font-bold text-2xl text-gray-800 mb-4">
-                {isManager ? 'Manager' : 'Worker'} Register Page
-                </h2>
-                <button
-                    onClick={() => setIsManager(!isManager)}
-                    className="cursor-pointer bg-slate-500 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
-                >
-                    REGISTER AS {isManager ? 'WORKER' : 'MANAGER'}
-                </button>
-                </div>
 
-                <div className="space-y-4">
-                {displayForm()}
+
+        <div className="h-screen flex bg-sky-50">
+            <div className="flex justify-center m-auto">
+                <div className="bg-white text-gray-800 w-120 h-130 flex flex-col justify-center rounded-l-xl shadow-2xl">
+                    <div className="flex flex-col items-center mb-5">
+                        <h1 className="text-3xl font-black">REGISTER PAGE</h1>
+                        <p>Already have an account? <Link to='/login' className="text-black underline">Login Page</Link></p>
+                    </div>
+                    <div className="flex gap-3 justify-center mb-10">
+                        <button onClick={() => setIsManager(false)} className={`w-35 rounded-lg border-2 px-4 py-1 text-sm cursor-pointer transition-all ${isManager ? "border-gray-600 text-black hover:bg-gray-800 hover:border-gray-800 hover:text-white" : "bg-gray-800 border-gray-800 text-white"}`}>DRIVER</button>
+                        <button onClick={() => setIsManager(true)} className={`w-35 rounded-lg border-2 px-4 py-1 text-sm cursor-pointer transition-all ${isManager ? "bg-gray-800 border-gray-800 text-white" : "border-gray-600 text-black hover:bg-gray-800 hover:border-gray-800 hover:text-white"}`}>MANAGER</button>
+                    </div>
+                    <div>
+                        {displayForm()}
+                    </div>
                 </div>
-                
+                <div className="shadow-2xl relative m-auto text-white w-120 h-130 rounded-r-xl bg-cover before:absolute before:inset-0 before:bg-black before:opacity-30 before:z-0 overflow-hidden" style={{ backgroundImage: `url(${truckbg})`, backgroundPosition: '60% 50%' }}>
+                </div>
             </div>
         </div>
     )
