@@ -43,7 +43,7 @@ export default function(){
         <nav className='bg-gray-800 text-white'>
           <ul className='flex gap-5 items-center py-3 px-20 justify-end h-15 font-bold'>
             <li>
-              <Link to='//'>HOME</Link>
+              <Link to='/'>HOME</Link>
             </li>
             {!user && <li>
               <Link to='/login'>LOGIN</Link>
@@ -52,16 +52,16 @@ export default function(){
               <Link to='/register'>REGISTER</Link>
             </li>}
             {user && <li>
-              <Link to={'/profile'}>Profile</Link>
+              <Link to={'/profile'}>PROFILE</Link>
             </li>}
             {user?.role === 'manager' && <li>
-              <Link to={'/trucks'}>Trucks</Link>
+              <Link to={'/trucks'}>TRUCKS</Link>
             </li>}
             {user?.role === 'manager' && <li>
-              <Link to={'/tasks'}>Tasks</Link>
+              <Link to={'/tasks'}>TASKS</Link>
             </li>}
             {user?.role === 'manager' && <li>
-              <Link to={'/workers'}>Workers</Link>
+              <Link to={'/workers'}>WORKERS</Link>
             </li>}
             {user && <li>
               <button className='cursor-pointer bg-red-500 hover:bg-red-600 px-2 py-0.5 text-white rounded-md' onClick={handleLogOut}>LogOut</button>

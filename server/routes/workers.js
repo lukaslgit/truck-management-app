@@ -158,6 +158,29 @@ router.get('/:id', auth, async (req, res) => {
     }
 })
 
+// Get worksers by manager id
+router.get('/managerid/:id', auth, async (req, res) => {
+    const { id } = req.params
+
+    try {
+        if (!id){
+            res.status(400).json({'error': 'No id!'})
+            return
+        }
+
+        const user = await pool.query('SELECT worker_id, first_name, last_name FROM workers WHERE manager_id = $1', [id])
+
+        if(user.rows.length === 0){
+            res.status(400).json({'error': 'No workers under this manager!'})
+            return
+        }
+
+        res.status(200).json(user.rows)
+    } catch (error) {
+        res.status(400).json({'error': 'Something went wrong!'})
+    }
+})
+
 // Get all workers
 router.get('/', auth, async (req, res) => {
     try {
