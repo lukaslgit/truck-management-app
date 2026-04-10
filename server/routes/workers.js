@@ -170,12 +170,34 @@ router.get('/managerid/:id', auth, async (req, res) => {
 
         const user = await pool.query('SELECT worker_id, first_name, last_name FROM workers WHERE manager_id = $1', [id])
 
-        if(user.rows.length === 0){
-            res.status(400).json({'error': 'No workers under this manager!'})
+        res.status(200).json(user.rows)
+    } catch (error) {
+        res.status(400).json({'error': 'Something went wrong!'})
+    }
+})
+
+// Get managers workers by name or last name and maybe one day by both at the same time :O
+router.get('/searchManagersWorkers/:managerId/:string', auth, async (req, res) => {
+
+    const { managerId, string } = req.params
+
+    try {
+
+        if(req.user.role != 'manager'){
+            res.status(400).json({'error': 'Only managers can search for their workers!'})
             return
         }
 
-        res.status(200).json(user.rows)
+        if (!string){
+            res.status(400).json({'error': 'When you search for something, you know you have to like search by something'})
+            return
+        }
+
+        // FIX later: if someone is searching for 'Jozef B' there will be nothing even when Jozef Bauer exists in the database, I will fix it someday maybe if I remember, but sometimes you forget and do not remember, thats just how it is sometimes. I am feeling very empty inside please hire me
+        const workers = await pool.query('SELECT worker_id, first_name, last_name FROM workers WHERE manager_id = $1 AND (first_name ILIKE $2 OR last_name ILIKE $2)', [managerId, `%${string.trim().replace(/\s+/g, ' ')}%`])
+
+        res.status(200).json(workers.rows)
+
     } catch (error) {
         res.status(400).json({'error': 'Something went wrong!'})
     }

@@ -5,23 +5,50 @@ import { Link } from "react-router-dom"
 
 export default function({ user }){
 
+    const [searchBar, setSearchBar] = useState('')
+    const [errorMsg, setErrorMsg] = useState('There are no drivers under your managment!')
+
     useEffect(() => {
-        if(user){
+
+        if(searchBar.length > 2){
+            searchManagersWorkersSearchbar()
+        } else {
+            setErrorMsg('There are no drivers under your managment!')
             searchManagersWorkers(user.manager_id)
         }
-    }, [user])
+    }, [searchBar, user])
 
     const [managersWorkers, setManagersWorkers] = useState([])
+    
 
     async function searchManagersWorkers(manager_id){
             try {
                 const res = await api.get(`workers/managerid/${manager_id}`)
-                console.log(res.data)
+
                 setManagersWorkers(res.data)
             } catch (error) {
-                console.log(error)
+                if (error.response.data.error){
+                    setErrorMsg(error.response.data.error)
+                    return
+                } else
+                console.log('Something went wrong!')
             }
         }
+
+    async function searchManagersWorkersSearchbar(){
+        try {
+            const res = await api.get(`workers/searchManagersWorkers/${user.manager_id}/${searchBar}`)
+            
+            if (res.data.length === 0){
+                setErrorMsg('There are no drivers under your managment with this name!')
+            }
+
+            setManagersWorkers(res.data)
+
+        } catch (error) {
+            setManagersWorkers([])
+        }
+    }
 
     return(
         <>
@@ -46,7 +73,7 @@ export default function({ user }){
                 </div>
                 </div>
             </section>
-            <section className="w-full bg-gray-100">
+            <section className="w-full bg-gray-100 pt-5">
                 <div className="w-10/12 m-auto flex">
                     <div className="w-1/4 h-100">
                         <p>phone number</p>
@@ -54,21 +81,29 @@ export default function({ user }){
                         <button>CHAT</button>
                     </div>
                     <div className="w-3/4 h-100">
-                        <p>Drivers you manage:</p>
+                        <p className="text-xl font-bold">Drivers you manage:</p>
 
-                            {managersWorkers.length == 0 &&<div><h2 className="font-bold">There are no drivers under your managment!</h2></div>}
+                            <div>
+
+                                <div className="mt-5 mb-3">
+                                    <input onChange={(e) => setSearchBar(e.target.value)} placeholder="Search... [Min. 3 Chars]" className="border-2 border-gray-700 rounded-md py-2 px-5"></input>
+                                </div>
+
+                            {managersWorkers.length == 0 &&<div><h2 className="font-bold">{errorMsg}</h2></div>}
                             {managersWorkers.length > 0 && 
                             <div>
-                                <ul className="flex gap-15">
+                                <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                                     {managersWorkers.map(worker => 
-                                    <li key={worker.worker_id}>
+                                    <li key={worker.worker_id} className="bg-white py-5 px-2 rounded-md">
                                         <Link to={`/workers/${worker.worker_id}`}>
-                                        <p>Name: {worker.first_name} {worker.last_name}</p>
+                                        <p className="font-bold">{worker.first_name} {worker.last_name}</p>
                                         <p>See more details...</p>
                                         </Link>
                                     </li>)}
                                 </ul>
                             </div>}
+
+                            </div>
                             
 
 

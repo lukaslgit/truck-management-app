@@ -87,7 +87,7 @@ export default function(){
         </Routes>
         </div>
 
-      <footer className="bg-gray-800 text-white text-center py-4 mt-4 md:mt-8 shadow-inner flex flex-col items-center gap-2">
+      <footer className="bg-gray-800 text-white text-center py-4 shadow-inner flex flex-col items-center gap-2">
         <p className="text-sm font-semibold">TRUCK MANAGEMENT APP</p>
         <p className="text-sm font-semibold">Lukas Lutonsky</p>
         <a href="https://github.com/lukaslgit/truck-management-app" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-500 transition-colors">GITHUB</a>
