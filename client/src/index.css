@@ -14,3 +14,7 @@ body {
   padding-right: 1.25rem;
   text-align: center;
 }
+
+@utility no-scrollbar {
+  @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}

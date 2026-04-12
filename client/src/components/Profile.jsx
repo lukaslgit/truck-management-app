@@ -1,7 +1,6 @@
 import { useAuth } from "../context/AuthContext.jsx"
-import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import api from '../api/axios.js'
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import Worker from "./Profile/Worker.jsx"
 import Manager from "./Profile/Manager.jsx"
 

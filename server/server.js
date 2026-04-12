@@ -10,6 +10,7 @@ import managers from './routes/managers.js'
 import trucks from './routes/trucks.js'
 import tasks from './routes/tasks.js'
 import notes from './routes/notes.js'
+import chats from './routes/chats.js'
 
 const app = express()
 
@@ -42,6 +43,9 @@ app.use('/api/tasks', tasks)
 
 //NOTES ROUTES
 app.use('/api/notes', notes)
+
+//CHATS ROUTES
+app.use('/api/chats', chats)
 
 
 app.listen(PORT, () => {

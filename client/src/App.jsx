@@ -13,6 +13,7 @@ import RegisterTask from './components/RegisterTask.jsx'
 import Task from './components/Task.jsx'
 import Workers from './components/Workers.jsx'
 import Worker from './components/Worker.jsx'
+import Chat from './components/Chat.jsx'
 
 import api from './api/axios.js'
 import { useAuth } from './context/AuthContext.jsx'
@@ -40,6 +41,7 @@ export default function(){
 
   return (
       <div className="flex flex-col">
+        <Chat user={user} />
         <nav className='bg-gray-800 text-white'>
           <ul className='flex gap-5 items-center py-3 px-20 justify-end h-15 font-bold'>
             <li>

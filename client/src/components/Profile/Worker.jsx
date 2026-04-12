@@ -9,7 +9,6 @@ export default function({ user }){
     const [finishedTasks, setFinishedTasks] = useState([])
 
     useEffect(() => {
-        console.log(user)
         workersTasks(user.worker_id)
     }, [user])
 
