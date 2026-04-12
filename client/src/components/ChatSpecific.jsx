@@ -13,6 +13,16 @@ export default function({ currentChat, user }){
     }, [currentChat])
 
     useEffect(() => {
+    const interval = setInterval(() => {
+        if (currentChat) {
+            getChatMessages()
+        }
+    }, 2000)
+
+    return () => clearInterval(interval)
+}, [currentChat])
+
+    useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
@@ -76,6 +86,7 @@ export default function({ currentChat, user }){
                 content: message,
             })
 
+            setMessage('')
             getChatMessages()
 
         } catch (error) {
@@ -126,7 +137,7 @@ export default function({ currentChat, user }){
                 
                 <div className='sticky bottom-0 bg-gray-700 py-2 px-5'>
                     <div className='mb-5 bg-gray-800 flex justify-center py-3 rounded-2xl'>
-                        <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Your msg...' className='border-r-2 border-black pl-3 w-full focus:outline-0'></input>
+                        <input value={message} onChange={(e) => setMessage(e.target.value)} onKeyDown={(e) => {if (e.key === 'Enter') {sendMessage()}}} placeholder='Your msg...' className='border-r-2 border-black pl-3 w-full focus:outline-0'></input>
                         <button onClick={() => sendMessage()} className='cursor-pointer text-center w-1/2'>Send!</button>
                     </div>
                 </div>
