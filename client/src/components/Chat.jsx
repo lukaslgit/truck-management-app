@@ -98,7 +98,7 @@ export default function({ user }){
                                 <div className='w-10 h-10 rounded-full bg-green-700'></div>
                                 <div>
                                     <p>{chat.name}</p>
-                                    <p>last msg: {chat.lastMessage.content}</p>
+                                    {chat.lastMessage?.content ? <p>last msg: {chat.lastMessage.content}</p> : <p></p>}
                                 </div>
                                 
                             </div>
