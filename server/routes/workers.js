@@ -148,7 +148,7 @@ router.get('/:id', auth, async (req, res) => {
         const user = await pool.query('SELECT worker_id, first_name, last_name FROM workers WHERE worker_id = $1', [id])
 
         if(user.rows.length === 0){
-            res.status(400).json({'error': 'Worker does not exist!'})
+            res.status(200).json({'worker_id': 'does not exist!', 'first_name': 'does not exist!', 'last_name': ''})
             return
         }
 

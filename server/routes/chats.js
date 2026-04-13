@@ -80,7 +80,13 @@ router.get('/viewChats', auth, async (req, res) => {
         
         const chatUsersWithoutMe = chatUsers.rows.filter(user => user.chatuser_id !== user_id && user.chatuser_type !== user_role)
 
-        res.status(200).json(chatUsersWithoutMe)
+        const lastMessages = await pool.query(`SELECT DISTINCT ON (chat_id) * FROM messages WHERE chat_id = ANY($1) ORDER BY chat_id, created_at DESC `, [chatIds])
+
+        const chatsWithLastMessage = chatUsersWithoutMe.map(user => { const lastMessage = lastMessages.rows.find( msg => msg.chat_id === user.chat_id )
+            return {...user, lastMessage: lastMessage || null    
+            }})
+
+        res.status(200).json(chatsWithLastMessage)
 
     } catch (error) {
         console.log(error)

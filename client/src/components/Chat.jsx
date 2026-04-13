@@ -19,6 +19,14 @@ export default function({ user }){
 
     }, [opened])
 
+    useEffect(() => {
+    if (!user) {
+        setOpened(false)
+        setCurrentChat(null)
+        setChats([])
+        setCurrentPartner('')
+    }
+    }, [user])
 
     async function getUsersChats() {
         try {
@@ -53,7 +61,8 @@ export default function({ user }){
                         chat_id: p.chat_id,
                         user_id: p.chatuser_id,
                         role: p.chatuser_type,
-                        name: `${userData.first_name} ${userData.last_name}`
+                        name: `${userData.first_name} ${userData.last_name}`,
+                        lastMessage: p.lastMessage
                     }
                 })
             )
@@ -89,7 +98,7 @@ export default function({ user }){
                                 <div className='w-10 h-10 rounded-full bg-green-700'></div>
                                 <div>
                                     <p>{chat.name}</p>
-                                    <p>last msg [WIP]</p>
+                                    <p>last msg: {chat.lastMessage.content}</p>
                                 </div>
                                 
                             </div>
@@ -97,7 +106,7 @@ export default function({ user }){
                     )}
                     </ul>
                 </div>}
-                {currentChat && <div className='flex flex-col h-full'>
+                {currentChat && <div className='flex flex-col'>
                     <div className='sticky top-0 z-10 bg-gray-700 pl-8 pt-5 pb-2 mb-2 w-full flex gap-5'>
                         <button onClick={() => setCurrentChat(null)} className='cursor-pointer'>
                             <ArrowLeftIcon className='h-6 w-6'/>

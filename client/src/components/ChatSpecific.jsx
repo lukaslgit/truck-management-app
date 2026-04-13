@@ -7,6 +7,7 @@ export default function({ currentChat, user }){
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
     const messagesEndRef = useRef(null)
+    const messagesRef = useRef([])
 
     useEffect(() => {
         getChatMessages()
@@ -20,10 +21,14 @@ export default function({ currentChat, user }){
     }, 2000)
 
     return () => clearInterval(interval)
-}, [currentChat])
+    }, [currentChat])
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages])
+
+    useEffect(() => {
+        messagesRef.current = messages
     }, [messages])
 
     async function getChatMessages() {
@@ -63,6 +68,14 @@ export default function({ currentChat, user }){
                     }
                 })
             )
+
+            const oldMessages = messagesRef.current
+
+            const isSame = oldMessages.length === chatMessagesWithNames.length &&
+                            oldMessages.every((msg, i) => msg.message_id === chatMessagesWithNames[i].message_id)
+            if (isSame) {
+                return
+            }
 
             setMessages(chatMessagesWithNames)
 
@@ -114,7 +127,7 @@ export default function({ currentChat, user }){
                                     minute: '2-digit'
                                 })}
                             </p>
-                            <p className='bg-blue-500 w-fit max-w-60 px-3 py-0.5 rounded-2xl'>{msg.content}</p>
+                            <p className='bg-blue-500 w-fit max-w-60 px-3 py-0.5 rounded-2xl ml-auto'>{msg.content}</p>
                         </div>
                         :
                         <div className='gap-3 min-h-3 ml-8'>
