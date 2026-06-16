@@ -21,7 +21,7 @@ export default function(){
                     hasTruck(workerId)
                 }
             }
-        }, [user, loading]); 
+        }, [user, loading]);
 
     async function getWorker(id) {
         try {
@@ -68,25 +68,31 @@ export default function(){
     }
 
     return(
-        <>
-        
-        {worker &&
-        <div>
-                <p>{worker.worker_id}</p>
-                <p>{`${worker.first_name} ${worker.last_name}`}</p>
-        </div>}
-        {truck ?
-        <div>
-                <Link to={`/trucks/${truck.truck_id}`}>{`( ID: ${truck.truck_id} ) ${truck.truck_name}`}</Link>
-        </div> :
-        <div>
-            <p>Worker has no truck!</p>
+        <div className="flex justify-center min-h-screen items-start pt-20 px-4">
+            <div className="bg-sky-100 p-8 rounded-xl w-full max-w-3xl space-y-6">
+                {worker && (
+                    <div className="bg-white p-6 rounded-lg shadow space-y-4">
+                        <p><span className="font-semibold">ID:</span> {worker.worker_id}</p>
+                        <p><span className="font-semibold">Name:</span> {worker.first_name} {worker.last_name}</p>
+                        {truck ? (
+                            <p>
+                                <span className="font-semibold">Truck:</span>{" "}
+                                <Link to={`/trucks/${truck.truck_id}`} className="text-blue-600 hover:underline">
+                                    (ID: {truck.truck_id}) {truck.truck_name}
+                                </Link>
+                            </p>
+                        ) : (
+                            <p><span className="font-semibold">Truck:</span> No truck assigned!</p>
+                        )}
+                        <button
+                            onClick={() => startChat()}
+                            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+                        >
+                            Start Chat
+                        </button>
+                    </div>
+                )}
+            </div>
         </div>
-        }
-
-        <div>
-            <button onClick={() => startChat()}>Start Chat!</button>
-        </div>
-        </>
     )
 }

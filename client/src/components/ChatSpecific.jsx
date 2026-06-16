@@ -108,8 +108,8 @@ export default function({ currentChat, user }){
     }
 
     return(
-        <div>
-            <ul className='space-y-2 pb-5 min-h-85'>
+        <div className='flex flex-col flex-1 overflow-hidden'>
+            <ul className='flex-1 overflow-y-auto no-scrollbar space-y-2 pb-5'>
                 {messages.map(msg => {
 
                     const currentUserId = user.role === 'manager' ? user.manager_id : user.worker_id
@@ -117,8 +117,8 @@ export default function({ currentChat, user }){
 
                     return(
                     <li key={msg.message_id}>
-                        {isMe ? 
-                        <div className='ml-auto w-fit mr-8'>
+                        {isMe ?
+                        <div className='ml-auto w-fit mr-4 sm:mr-8'>
                             <p className='text-right text-xs text-gray-300'>
                                 {new Date(msg.created_at).toLocaleString('sk-SK', {
                                     day: '2-digit',
@@ -127,10 +127,10 @@ export default function({ currentChat, user }){
                                     minute: '2-digit'
                                 })}
                             </p>
-                            <p className='bg-blue-500 w-fit max-w-60 px-3 py-0.5 rounded-2xl ml-auto'>{msg.content}</p>
+                            <p className='bg-blue-500 w-fit max-w-[70%] sm:max-w-60 px-3 py-0.5 rounded-2xl ml-auto wrap-break-word'>{msg.content}</p>
                         </div>
                         :
-                        <div className='gap-3 min-h-3 ml-8'>
+                        <div className='gap-3 min-h-3 ml-4 sm:ml-8'>
                             <div className='flex gap-2 text-xs text-gray-300'>
                                 <p>{msg.first_name}:</p>
                                 <p>{new Date(msg.created_at).toLocaleString('sk-SK', {
@@ -141,19 +141,19 @@ export default function({ currentChat, user }){
                                     })}
                                 </p>
                             </div>
-                            <p className='bg-gray-600 w-fit max-w-60 px-3 py-0.5 rounded-2xl'>{msg.content}</p>
+                            <p className='bg-gray-600 w-fit max-w-[70%] sm:max-w-60 px-3 py-0.5 rounded-2xl wrap-break-word'>{msg.content}</p>
                         </div>
                     }
                 </li>)})}
                 <div ref={messagesEndRef} />
             </ul>
-                
-                <div className='sticky bottom-0 bg-gray-700 py-2 px-5'>
-                    <div className='mb-5 bg-gray-800 flex justify-center py-3 rounded-2xl'>
-                        <input value={message} onChange={(e) => setMessage(e.target.value)} onKeyDown={(e) => {if (e.key === 'Enter') {sendMessage()}}} placeholder='Your msg...' className='border-r-2 border-black pl-3 w-full focus:outline-0'></input>
-                        <button onClick={() => sendMessage()} className='cursor-pointer text-center w-1/2'>Send!</button>
-                    </div>
+
+            <div className='bg-gray-700 py-2 px-3 sm:px-5 shrink-0'>
+                <div className='bg-gray-800 flex justify-center py-3 rounded-2xl'>
+                    <input value={message} onChange={(e) => setMessage(e.target.value)} onKeyDown={(e) => {if (e.key === 'Enter') {sendMessage()}}} placeholder='Your msg...' className='border-r-2 border-black pl-3 w-full focus:outline-0'></input>
+                    <button onClick={() => sendMessage()} className='cursor-pointer text-center w-16 sm:w-1/2 shrink-0'>Send!</button>
                 </div>
+            </div>
         </div>
     )
 }

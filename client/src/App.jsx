@@ -1,4 +1,6 @@
 import { Routes, Route, Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import Home from './components/Home'
 import Login from './components/Login'
@@ -21,6 +23,7 @@ import { useAuth } from './context/AuthContext.jsx'
 export default function(){
 
   const { user, setUser } = useAuth()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   async function handleLogOut(){
     try {
@@ -42,33 +45,40 @@ export default function(){
   return (
       <div className="flex flex-col">
         <Chat user={user} />
-        <nav className='bg-gray-800 text-white'>
-          <ul className='flex gap-5 items-center py-3 px-20 justify-end h-15 font-bold'>
-            <li>
-              <Link to='/'>HOME</Link>
-            </li>
-            {!user && <li>
-              <Link to='/login'>LOGIN</Link>
-            </li>}
-            {!user && <li>
-              <Link to='/register'>REGISTER</Link>
-            </li>}
-            {user && <li>
-              <Link to={'/profile'}>PROFILE</Link>
-            </li>}
-            {user?.role === 'manager' && <li>
-              <Link to={'/trucks'}>TRUCKS</Link>
-            </li>}
-            {user?.role === 'manager' && <li>
-              <Link to={'/tasks'}>TASKS</Link>
-            </li>}
-            {user?.role === 'manager' && <li>
-              <Link to={'/workers'}>WORKERS</Link>
-            </li>}
-            {user && <li>
-              <button className='cursor-pointer bg-red-500 hover:bg-red-600 px-2 py-0.5 text-white rounded-md' onClick={handleLogOut}>LogOut</button>
-            </li>}
-          </ul>
+        <nav className='bg-gray-800 text-white relative'>
+          <div className='flex items-center justify-between py-3 px-5 md:px-20 h-15 font-bold'>
+            <Link to='/'>TruckApp</Link>
+
+            <button className='md:hidden cursor-pointer' onClick={() => setMenuOpen(!menuOpen)}>
+              {menuOpen ? <XMarkIcon className='h-6 w-6' /> : <Bars3Icon className='h-6 w-6' />}
+            </button>
+
+            <ul className='hidden md:flex gap-5 items-center'>
+              {!user && <li><Link to='/login'>LOGIN</Link></li>}
+              {!user && <li><Link to='/register'>REGISTER</Link></li>}
+              {user && <li><Link to={'/profile'}>PROFILE</Link></li>}
+              {user?.role === 'manager' && <li><Link to={'/trucks'}>TRUCKS</Link></li>}
+              {user?.role === 'manager' && <li><Link to={'/tasks'}>TASKS</Link></li>}
+              {user?.role === 'manager' && <li><Link to={'/workers'}>WORKERS</Link></li>}
+              {user && <li>
+                <button className='cursor-pointer bg-red-500 hover:bg-red-600 px-2 py-0.5 text-white rounded-md' onClick={handleLogOut}>LogOut</button>
+              </li>}
+            </ul>
+          </div>
+
+          <div className={`md:hidden fixed top-15 left-0 right-0 z-50 overflow-hidden transition-all duration-300 ease-in-out ${menuOpen ? 'max-h-96' : 'max-h-0'}`}>
+            <ul className='flex flex-col gap-4 px-5 py-4 bg-gray-700 font-bold border-t border-gray-600'>
+              {!user && <li onClick={() => setMenuOpen(false)}><Link to='/login'>LOGIN</Link></li>}
+              {!user && <li onClick={() => setMenuOpen(false)}><Link to='/register'>REGISTER</Link></li>}
+              {user && <li onClick={() => setMenuOpen(false)}><Link to={'/profile'}>PROFILE</Link></li>}
+              {user?.role === 'manager' && <li onClick={() => setMenuOpen(false)}><Link to={'/trucks'}>TRUCKS</Link></li>}
+              {user?.role === 'manager' && <li onClick={() => setMenuOpen(false)}><Link to={'/tasks'}>TASKS</Link></li>}
+              {user?.role === 'manager' && <li onClick={() => setMenuOpen(false)}><Link to={'/workers'}>WORKERS</Link></li>}
+              {user && <li>
+                <button className='cursor-pointer bg-red-500 hover:bg-red-600 px-2 py-0.5 text-white rounded-md' onClick={() => { handleLogOut(); setMenuOpen(false) }}>LogOut</button>
+              </li>}
+            </ul>
+          </div>
         </nav>
 
         <div className="grow">

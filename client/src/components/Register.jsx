@@ -25,15 +25,15 @@ export default function(){
             return <Manager />
         } else
 
-        return <Worker />  
+        return <Worker />
     }
 
     return(
 
 
-        <div className="h-screen flex bg-sky-50">
-            <div className="flex justify-center m-auto">
-                <div className="bg-white text-gray-800 w-120 h-130 flex flex-col justify-center rounded-l-xl shadow-2xl">
+        <div className="min-h-screen flex bg-sky-50 py-10 sm:py-0">
+            <div className="flex justify-center m-auto w-full px-4 sm:px-0">
+                <div className="bg-white text-gray-800 w-full sm:w-120 sm:h-130 flex flex-col justify-center rounded-xl sm:rounded-l-xl sm:rounded-r-none shadow-2xl py-10 sm:py-0">
                     <div className="flex flex-col items-center mb-5">
                         <h1 className="text-3xl font-black">REGISTER PAGE</h1>
                         <p>Already have an account? <Link to='/login' className="text-black underline">Login Page</Link></p>
@@ -46,7 +46,7 @@ export default function(){
                         {displayForm()}
                     </div>
                 </div>
-                <div className="shadow-2xl relative m-auto text-white w-120 h-130 rounded-r-xl bg-cover before:absolute before:inset-0 before:bg-black before:opacity-30 before:z-0 overflow-hidden" style={{ backgroundImage: `url(${truckbg})`, backgroundPosition: '60% 50%' }}>
+                <div className="hidden sm:block shadow-2xl relative text-white w-120 h-130 rounded-r-xl bg-cover before:absolute before:inset-0 before:bg-black before:opacity-30 before:z-0 overflow-hidden" style={{ backgroundImage: `url(${truckbg})`, backgroundPosition: '60% 50%' }}>
                 </div>
             </div>
         </div>

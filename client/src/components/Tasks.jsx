@@ -65,20 +65,20 @@ export default function(){
         <div className="flex justify-center min-h-screen items-start pt-20">
         <div className="bg-sky-100 p-8 rounded-xl w-full max-w-3xl space-y-6">
             
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
                 <input
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 type="text"
                 placeholder="Search tasks..."
-                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+                className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                 />
             </div>
             <div>
                 <Link
                 to={'/tasks/register'}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+                className="block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
                 >
                 CREATE NEW TASK
                 </Link>

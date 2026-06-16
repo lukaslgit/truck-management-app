@@ -1,4 +1,4 @@
-import { ChatBubbleLeftIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
+import { ChatBubbleLeftIcon, ArrowLeftIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../api/axios'
@@ -66,9 +66,9 @@ export default function({ user }){
                     }
                 })
             )
-            
+
             setChats(chatPartnersWithNames)
-            
+
 
         } catch (error) {
             console.log(error);
@@ -77,46 +77,53 @@ export default function({ user }){
 
     return(
         <div className='z-100'>
-            {opened && <div className='fixed bg-gray-800 w-100 h-120 right-10 bottom-10 overflow-y-auto no-scrollbar text-white rounded-3xl shadow-xl shadow-black/50'>
-                {!currentChat && <div> 
-                    <div className='flex justify-center mb-3 bg-gray-700'>
-                        <p className='mt-3 mb-3 text-lg font-bold'>CHAT</p>
+            {opened && <div className='fixed bg-gray-800 w-[calc(100vw-16px)] sm:w-100 h-[85vh] sm:h-120 right-2 sm:right-10 bottom-2 sm:bottom-10 flex flex-col text-white rounded-3xl shadow-xl shadow-black/50 overflow-hidden'>
+                {!currentChat && <div className='flex flex-col h-full'>
+                    <div className='relative flex justify-center items-center bg-gray-700 h-12 shrink-0'>
+                        <p className='text-lg font-bold'>CHAT</p>
+                        <button onClick={() => setOpened(false)} className='sm:hidden absolute right-3 cursor-pointer text-red-400'>
+                            <XMarkIcon className='h-6 w-6' />
+                        </button>
                     </div>
-                    {user && chats.length === 0 && 
-                        <div className='mt-8'>
-                            <p className='text-center'>You don't have any chats yet.</p>
-                        </div>}
-                    {!user && 
-                        <div className='mt-8 text-center'>
-                            <p className='mb-5'>You need to log in to use the chat!</p>
-                            <Link to={'/login'} onClick={() => setOpened(false)} className='py-2 px-5 bg-gray-600 rounded-md'>LOG IN</Link>
-                        </div>}
-                    <ul className='space-y-4'>
-                    {chats.map(chat => 
-                        <li key={chat.chat_id}>
-                            <div onClick={() => {setCurrentChat(chat.chat_id); setCurrentPartner(chat.name)}} className='py-3 px-3 flex items-center gap-5 bg-gray-600 w-full cursor-pointer'>
-                                <div className='w-10 h-10 rounded-full bg-green-700'></div>
-                                <div>
-                                    <p>{chat.name}</p>
-                                    {chat.lastMessage?.content ? <p>last msg: {chat.lastMessage.content}</p> : <p></p>}
+                    <div className='flex-1 overflow-y-auto no-scrollbar'>
+                        {user && chats.length === 0 &&
+                            <div className='mt-8'>
+                                <p className='text-center'>You don't have any chats yet.</p>
+                            </div>}
+                        {!user &&
+                            <div className='mt-8 text-center'>
+                                <p className='mb-5'>You need to log in to use the chat!</p>
+                                <Link to={'/login'} onClick={() => setOpened(false)} className='py-2 px-5 bg-gray-600 rounded-md'>LOG IN</Link>
+                            </div>}
+                        <ul className='space-y-4'>
+                        {chats.map(chat =>
+                            <li key={chat.chat_id}>
+                                <div onClick={() => {setCurrentChat(chat.chat_id); setCurrentPartner(chat.name)}} className='py-3 px-3 flex items-center gap-5 bg-gray-600 w-full cursor-pointer'>
+                                    <div className='w-10 h-10 rounded-full bg-green-700 shrink-0'></div>
+                                    <div className='min-w-0'>
+                                        <p className='truncate'>{chat.name}</p>
+                                        {chat.lastMessage?.content ? <p className='text-sm text-gray-300 truncate'>last msg: {chat.lastMessage.content}</p> : <p></p>}
+                                    </div>
                                 </div>
-                                
-                            </div>
-                        </li>
-                    )}
-                    </ul>
+                            </li>
+                        )}
+                        </ul>
+                    </div>
                 </div>}
-                {currentChat && <div className='flex flex-col'>
-                    <div className='sticky top-0 z-10 bg-gray-700 pl-8 pt-5 pb-2 mb-2 w-full flex gap-5'>
+                {currentChat && <div className='flex flex-col h-full'>
+                    <div className='bg-gray-700 px-3 h-12 w-full flex items-center gap-3 shrink-0'>
                         <button onClick={() => setCurrentChat(null)} className='cursor-pointer'>
                             <ArrowLeftIcon className='h-6 w-6'/>
                         </button>
-                        <p>{currentPartner}</p>
+                        <p className='flex-1'>{currentPartner}</p>
+                        <button onClick={() => setOpened(false)} className='sm:hidden cursor-pointer text-red-400'>
+                            <XMarkIcon className='h-6 w-6' />
+                        </button>
                     </div>
                     <ChatSpecific currentChat={currentChat} user={user}/>
                 </div>}
             </div>}
-            <ChatBubbleLeftIcon onClick={() => setOpened(!opened)} className='cursor-pointer fixed z-1 right-10 bottom-10 w-12 h-12 border-2 border-white rounded-full p-2 bg-white shadow-lg shadow-black/10' />
+            <ChatBubbleLeftIcon onClick={() => setOpened(!opened)} className={`cursor-pointer fixed z-1 right-4 sm:right-10 bottom-4 sm:bottom-10 w-12 h-12 border-2 border-white rounded-full p-2 bg-white shadow-lg shadow-black/10 ${opened ? 'hidden sm:block' : ''}`} />
         </div>
     )
 }
