@@ -53,14 +53,14 @@ router.post('/login', async (req, res) => {
         const user = await pool.query('SELECT manager_id, first_name, last_name, email, password FROM managers WHERE email = $1', [email])
 
         if(user.rows.length == 0){
-            res.status(400).json({'error': 'User does not exist'})
+            res.status(401).json({'error': 'User does not exist'})
             return
         }
 
         const matchPass = await bcrypt.compare(password, user.rows[0].password)
 
         if(!matchPass){
-            res.status(400).json({'error': 'Wrong password!'})
+            res.status(401).json({'error': 'Wrong password!'})
             return
         }
 
@@ -76,7 +76,7 @@ router.post('/login', async (req, res) => {
 
         res.status(200).json({'message': 'Logged in!'})
     } catch (error) {
-        res.status(400).json({'error': 'Something went wrong, please try again later!'})
+        res.status(500).json({'error': 'Something went wrong, please try again later!'})
     }
 })
 

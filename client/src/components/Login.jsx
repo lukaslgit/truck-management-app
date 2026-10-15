@@ -39,7 +39,7 @@ export default function(){
                     </div>
                     <div className="flex gap-3 justify-center mb-10">
                         <button onClick={() => setIsManager(false)} className={`w-35 rounded-lg border-2 px-4 py-1 text-sm cursor-pointer transition-all ${isManager ? "border-gray-600 text-black hover:bg-gray-800 hover:border-gray-800 hover:text-white" : "bg-gray-800 border-gray-800 text-white"}`}>DRIVER</button>
-                        <button onClick={() => setIsManager(true)} className={`w-35 rounded-lg border-2 px-4 py-1 text-sm cursor-pointer transition-all ${isManager ? "bg-gray-800 border-gray-800 text-white" : "border-gray-600 text-black hover:bg-gray-800 hover:border-gray-800 hover:text-white"}`}>MANAGER</button>
+                        <button data-testid="manager-btn" onClick={() => setIsManager(true)} className={`w-35 rounded-lg border-2 px-4 py-1 text-sm cursor-pointer transition-all ${isManager ? "bg-gray-800 border-gray-800 text-white" : "border-gray-600 text-black hover:bg-gray-800 hover:border-gray-800 hover:text-white"}`}>MANAGER</button>
                     </div>
                     <div>
                         {displayForm()}

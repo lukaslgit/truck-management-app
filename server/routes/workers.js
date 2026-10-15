@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
             }
 
             if (emailExist.rows[0].count == 0){
-                res.status(400).json({'error': 'User does not exist!'})
+                res.status(401).json({'error': 'User does not exist!'})
                 return
             }
 
@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
             const passMatch = await bcrypt.compare(password, hashPassword)
 
             if (!passMatch) {
-                res.status(400).json({'error': 'Wrong password!'})
+                res.status(401).json({'error': 'Wrong password!'})
                 return
             }
 

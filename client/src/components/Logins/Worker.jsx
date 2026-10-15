@@ -40,6 +40,7 @@ export default function(){
             <form onSubmit={handleLogin} className='flex flex-col'>
                 <div className='flex flex-col gap-3'>
                     <input
+                        data-testid='email-input'
                         type="email"
                         placeholder="Email"
                         value={email}
@@ -49,6 +50,7 @@ export default function(){
                     />
 
                     <input
+                        data-testid='password-input'
                         type="password"
                         placeholder="Password"
                         value={password}
@@ -58,10 +60,10 @@ export default function(){
                     />
                 </div>
 
-            <button type="submit" className='m-auto mt-10 bg-gray-800 min-w-50 text-white px-5 py-1 rounded-md text-md cursor-pointer hover:bg-gray-600 transition-colors' >LOG IN</button>
+            <button data-testid="login-submit-btn" type="submit" className='m-auto mt-10 bg-gray-800 min-w-50 text-white px-5 py-1 rounded-md text-md cursor-pointer hover:bg-gray-600 transition-colors' >LOG IN</button>
             </form>
 
-            {error && <p>{error}</p>}
+            {error && <p data-testid="auth-error">{error}</p>}
         </div>
     )
 }
